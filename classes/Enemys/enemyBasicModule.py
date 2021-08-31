@@ -5,7 +5,7 @@ from Configs import InputKeyMap
 
 class Enemy(AnimatedEntity):
     
-    spritesheetPath = "images/Sheet.jpg"
+    spritesheetPath = "images/InitSprite.png"
     rectsPos = []
    
     #animations = [[(3,0,24,29),(30,0,24,29),(58,0,24,29),(87,0,24,29),(115,0,24,29),(143,0,24,29),(171,0,24,29),(199,0,24,29)],

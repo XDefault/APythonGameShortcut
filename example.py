@@ -4,7 +4,7 @@ from Configs.ConfigurationHandler import Configuration
 from Configs.ColorsConfig import COLORS
 from classes.Enemys.enemyBasicModule import Enemy
 from classes.SpriteRenderLayer.SpriteLayerRenderHandler import *
-from classes.InputSystem import InputManager       #Import the script, not the class, to use the static manager
+from classes.InputSystem import InputManager
 from classes.Events import EventHandler
 from classes.PhysicsEngine.PhysicsSystem import PhysicsManager
 from classes.LanguageSystem import LanguageManager as LangManager
@@ -62,7 +62,7 @@ render.AddLayerToRender(layer1)
 render.AddLayerToRender(layer2)
 
 #Set a static Input Manager and Event Handler
-inputManager = InputManager.manager             #Using the manager inside the script so there never more than one
+inputManager = InputManager.manager            #Using the manager inside the script so there never more than one
 eventHandler = EventHandler.GetStaticHandler() #Using the event handler in the script so there never more than one
 inputManager.subscribeObserver(player.ControlledMovementExample)    #Setting the fuctions that should be notify  
                                                                     #when the player hits a key on the keyboard
@@ -79,13 +79,13 @@ while True:
     inputManager.ExecuteKeysPressed()  #Execute key strokes
     eventHandler.EventsSingleCheck()   #Execute events and remove then from the list
     
-    PEngine.Update()                    #Update the physics every frame
+    PEngine.Update()                   #Update the physics every frame
 
     Displaysurf.fill(COLORS.GRAY)
     
     enemyGroup.update()
 
-    render.DrawLayers(Displaysurf)      #Render the layers to the display
+    render.DrawLayers(Displaysurf)     #Render the layers to the display
 
     #Setting up the text to use the translation from the json file
     textSurface = myText.render("Current Language: "+currentGameLang,False,(0,0,0))
