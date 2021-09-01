@@ -8,6 +8,8 @@ from classes.InputSystem import InputManager
 
 class Entity(pygame.sprite.Sprite):
 
+    __UsedID = []
+
     def __init__(self,IDName=None):
         super().__init__()
         #private variables
@@ -33,7 +35,13 @@ class Entity(pygame.sprite.Sprite):
 
         if(IDName == None):                             #Set a random ID if none
             data = range(1,15000)
-            self.SetIDName(str(random.sample(data,1)))
+            newId = random.sample(data,1)
+
+            if(self.__UsedID.__contains__(newId)):
+                newId = random.sample(data,1)
+            else:
+                self.__UsedID.append(newId)
+                self.SetIDName(str(random.sample(data,1)))
         else:
             self.SetIDName(IDName)
         
@@ -202,7 +210,6 @@ class AnimatedEntity(Entity):
     images = []
     transparancyColor = None
     currentAnimation = ""                               #Ease check for wich animations is been played
-    animationNames = []                                 #Name and animation bellow has to be in the same order
     animations = [[]]                                   #All Animations that can be played by this Entity
     
     #--------------------------------------------------------------------------------------------------
@@ -229,12 +236,13 @@ class AnimatedEntity(Entity):
 
     def SetAnimation(self,animationName=None):          #Change animation to the name specify
         animationSelect = 0
+        print(self.animations[0].animationName)
 
-        for name in self.animationNames:
-            if(name == animationName):
+        for animation in self.animations:
+            if(animation.animationName == animationName):
                 print("\nEntity ID: "+self.GetIDName())
                 print("Animation Before: "+self.currentAnimation+" | Rect Before" + str(self.rectsPos))
-                self.currentAnimation = name
+                self.currentAnimation = animation.animationName
                 self.rectsPos = self.animations[animationSelect].animation
                 self.images = self.ss.images_at(self.rectsPos,self.transparancyColor)
                 print("Animation After: "+self.currentAnimation+' | Rect After' + str(self.rectsPos))
@@ -242,6 +250,7 @@ class AnimatedEntity(Entity):
                 return
             else:
                 animationSelect += 1
+                
         
         print("No Animation was Found")
 
