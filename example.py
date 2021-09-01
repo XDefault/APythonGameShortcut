@@ -2,7 +2,7 @@ import sys
 import pygame
 from Configs.ConfigurationHandler import Configuration
 from Configs.ColorsConfig import COLORS
-from classes.Enemys.enemyBasicModule import Enemy
+from classes.Player.PlayerExampleModule import Player
 from classes.SpriteRenderLayer.SpriteLayerRenderHandler import *
 from classes.InputSystem import InputManager
 from classes.Events import EventHandler
@@ -22,26 +22,26 @@ LangManager.ChangeLanguage(LangManager.Langs.EN)        #Set the Language to eng
 currentGameLang = LangManager.GetTextByValue("Lang")    #Get the text in json file based on the key value passed and language selected
 
 #Set Entities And Groups
-enemy = Enemy()             #Creating a Enemy and not setting a ID so a random will be generated
-enemy.SetIDName("Enemy1")   #Setting a ID through a function
-enemy.UseGravity(False)     #Setting the enemy to not be affected by gravity
-enemy.SpawnPoint(50,500)    #Setting the SpawnPoint Position
+player1 = Player()              #Creating a player and not setting a ID so a random will be generated
+player1.SetIDName("Player1")    #Setting a ID through a function
+player1.UseGravity(False)       #Setting the player to not be affected by gravity
+player1.SpawnPoint(50,500)      #Setting the SpawnPoint Position
      
-player = Enemy("Player")    #Creating a "Enemy" and setting a ID right at the start
-player.StaticPhysics(False) #Setting the player physics to be controlled by the Physics Engine
-player.SpawnPoint(50,300)   #Setting the SpawnPoint Position
-player.UseGravity(True)     #Setting the enemy to not be affected by gravity
+player2 = Player("Player2")  #Creating a second player and setting a ID right at the start
+player2.StaticPhysics(False) #Setting the player physics to be controlled by the Physics Engine
+player2.SpawnPoint(50,300)   #Setting the SpawnPoint Position
+player2.UseGravity(True)     #Setting the player to not be affected by gravity
 
-print("enemy ID: "+enemy.GetIDName())   #Printing the ID for the example above
-print("player ID: "+player.GetIDName()) #Printing the ID for the example above
+print("player1 ID: "+player1.GetIDName())   #Printing the ID for the example above
+print("player2 ID: "+player2.GetIDName())   #Printing the ID for the example above
 
-enemyGroup = pygame.sprite.Group(enemy) #Setting up a group of sprites
-enemyGroup.add(player)                  #Adding up the player as part of the group
+playerGroup = pygame.sprite.Group(player1)  #Setting up a group of sprites
+playerGroup.add(player2)                    #Adding up the second player as part of the group
 
 #Set Physics Engine
-PEngine = PhysicsManager(Displaysurf)   #Passing the Display of the game to the Physics Engine
-PEngine.AddEntityToPhysics(enemy)       #Setting the entities that should be affected by the Physics Engine
-PEngine.AddEntityToPhysics(player)
+PEngine = PhysicsManager(Displaysurf)       #Passing the Display of the game to the Physics Engine
+PEngine.AddEntityToPhysics(player1)         #Setting the entities that should be affected by the Physics Engine
+PEngine.AddEntityToPhysics(player2)
 
 #Set Render
 render = Render()
@@ -54,8 +54,8 @@ layer2 = BackgroundLayer()
 layer2.orderOfLayer = 1
 
 #Add entities to layers
-layer1.AddToLayer(enemy)
-layer2.AddToLayer(player)
+layer1.AddToLayer(player1)
+layer2.AddToLayer(player2)
 
 #Set Layer To Render
 render.AddLayerToRender(layer1)
@@ -64,7 +64,7 @@ render.AddLayerToRender(layer2)
 #Set a static Input Manager and Event Handler
 inputManager = InputManager.manager            #Using the manager inside the script so there never more than one
 eventHandler = EventHandler.GetStaticHandler() #Using the event handler in the script so there never more than one
-inputManager.subscribeObserver(player.ControlledMovementExample)    #Setting the fuctions that should be notify  
+inputManager.subscribeObserver(player2.ControlledMovementExample)    #Setting the fuctions that should be notify  
                                                                     #when the player hits a key on the keyboard
 
 myText = pygame.font.SysFont('Comic Sans MS',30)
@@ -83,7 +83,7 @@ while True:
 
     Displaysurf.fill(COLORS.GRAY)
     
-    enemyGroup.update()
+    playerGroup.update()
 
     render.DrawLayers(Displaysurf)     #Render the layers to the display
 
