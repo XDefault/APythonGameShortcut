@@ -210,7 +210,7 @@ class AnimatedEntity(Entity):
     images = []
     transparancyColor = None
     currentAnimation = ""                               #Ease check for wich animations is been played
-    animations = [[]]                                   #All Animations that can be played by this Entity
+    animations = []                                   #All Animations that can be played by this Entity
     
     #--------------------------------------------------------------------------------------------------
 
