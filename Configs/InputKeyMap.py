@@ -4,7 +4,7 @@ from classes.InputSystem.Keys import Key
 import keyboard
 
 
-class InputMap:
+class __InputMap:
     keys = [Key("up","w"),Key("down","s"),Key("left","a"),Key("right","d")]
 
     def GetKeyByActionName(self,action):
@@ -47,4 +47,13 @@ class InputMap:
         except:
             print("ERROR: No action has been found")
 
-staticInputMap = InputMap()
+__staticInputMap = __InputMap()
+
+def GetStaticMap():
+    global __staticInputMap
+    if(__staticInputMap == None):
+        try:
+            __staticInputMap = __InputMap()
+        except:
+            raise TypeError
+    return __staticInputMap

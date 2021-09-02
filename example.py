@@ -62,9 +62,9 @@ render.AddLayerToRender(layer1)
 render.AddLayerToRender(layer2)
 
 #Set a static Input Manager and Event Handler
-inputManager = InputManager.manager            #Using the manager inside the script so there never more than one
+inputManager = InputManager.GetStaticManager() #Using the manager inside the script so there never more than one
 eventHandler = EventHandler.GetStaticHandler() #Using the event handler in the script so there never more than one
-inputManager.subscribeObserver(player2.ControlledMovementExample)    #Setting the fuctions that should be notify  
+inputManager.subscribeObserver(player2.ControlledMovementExample)   #Setting the fuctions that should be notify  
                                                                     #when the player hits a key on the keyboard
 
 myText = pygame.font.SysFont('Comic Sans MS',30)
