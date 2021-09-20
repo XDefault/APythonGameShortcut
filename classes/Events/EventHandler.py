@@ -1,5 +1,3 @@
-import pygame
-
 from classes.InputSystem.InputClass import Input
 from classes.Events.EventClass import Event
 

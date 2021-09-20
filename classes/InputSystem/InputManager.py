@@ -45,7 +45,8 @@ class __InputManagerHandler:
     def subscribeObserver(self,observer):   #Register functions to be notify without going though the EventManager
         if(self.__observers.__contains__(observer) == False):
             self.__observers.append(observer)
-            print("Observer Subcribed: " + str(observer))
+            print("\nInputManager")
+            print("   '->Observer Subcribed: " + str(observer))
 
     def NotifyObservers(self,command):  #Notify any funcion subcribed as a observer and pass the key that was pressed
         for o in self.__observers:

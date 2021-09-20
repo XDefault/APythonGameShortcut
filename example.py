@@ -1,13 +1,16 @@
 import sys
-import pygame
+#import pygame
 from Configs.ConfigurationHandler import Configuration
 from Configs.ColorsConfig import COLORS
 from classes.Player.PlayerExampleModule import Player
+from classes.SpriteRenderLayer import SpriteLayerRenderHandler as RenderManager
 from classes.SpriteRenderLayer.SpriteLayerRenderHandler import *
 from classes.InputSystem import InputManager
 from classes.Events import EventHandler
 from classes.PhysicsEngine.PhysicsSystem import PhysicsManager
 from classes.LanguageSystem import LanguageManager as LangManager
+from classes.LevelManager import LevelManager
+from classes.LevelManager.Levels.ExampleLevel import ExampleLevelClass
 
 #Setup Game
 pygame.init()
@@ -22,6 +25,8 @@ LangManager.ChangeLanguage(LangManager.Langs.EN)        #Set the Language to eng
 currentGameLang = LangManager.GetTextByValue("Lang")    #Get the text in json file based on the key value passed and language selected
 
 #Set Entities And Groups
+
+#Setting Entities can be done inside a level class------------------------------------------------------------
 player1 = Player()              #Creating a player and not setting a ID so a random will be generated
 player1.SetIDName("Player1")    #Setting a ID through a function
 player1.UseGravity(False)       #Setting the player to not be affected by gravity
@@ -31,9 +36,11 @@ player2 = Player("Player2")  #Creating a second player and setting a ID right at
 player2.StaticPhysics(False) #Setting the player physics to be controlled by the Physics Engine
 player2.SpawnPoint(50,300)   #Setting the SpawnPoint Position
 player2.UseGravity(True)     #Setting the player to not be affected by gravity
+#--------------------------------------------------------------------------------------------------------------
 
-print("player1 ID: "+player1.GetIDName())   #Printing the ID for the example above
-print("player2 ID: "+player2.GetIDName())   #Printing the ID for the example above
+print("\nEntities Info")
+print("   '->player1 ID: "+player1.GetIDName()) #Printing the ID for the example above
+print("   '->player2 ID: "+player2.GetIDName()) #Printing the ID for the example above
 
 playerGroup = pygame.sprite.Group(player1)  #Setting up a group of sprites
 playerGroup.add(player2)                    #Adding up the second player as part of the group
@@ -44,14 +51,14 @@ PEngine.AddEntityToPhysics(player1)         #Setting the entities that should be
 PEngine.AddEntityToPhysics(player2)
 
 #Set Render
-render = Render()
+render = RenderManager.GetStaticManager()
 
 #Set Sprite Layers
 layer1 = Layer()
-layer1.orderOfLayer = 0
+layer1.orderOfLayer = 0             #Normal Layers never stays a negative number, the system will make a positive number
 
 layer2 = BackgroundLayer()
-layer2.orderOfLayer = 1
+layer2.orderOfLayer = 1             #Background Layers will always become a negative number, if it is set to 0 the system will make be -1
 
 #Add entities to layers
 layer1.AddToLayer(player1)
@@ -66,6 +73,12 @@ inputManager = InputManager.GetStaticManager() #Using the manager inside the scr
 eventHandler = EventHandler.GetStaticHandler() #Using the event handler in the script so there never more than one
 inputManager.subscribeObserver(player2.ControlledMovementExample)   #Setting the fuctions that should be notify  
                                                                     #when the player hits a key on the keyboard
+
+levelManager = LevelManager.GetStaticManager()      #Using the manager inside the script so there never more than one
+levelManager.AddLevelToList(ExampleLevelClass())    #Adding the level to the manager list
+levelManager.ArrangeLevelOrder()                    #Arranging the order of the levels based on their index var
+#levelManager.LoadLevel(0)                          #Load the first item on the level list
+levelManager.LoadLevelWithIndex(1)                  #Load level with the internal index of 1
 
 myText = pygame.font.SysFont('Comic Sans MS',30)
 

@@ -30,7 +30,8 @@ class PhysicsManager:
         self.__display.h = self.__display.h * self.__PhysicsDisplayRatio
         self.__display.x -= self.__display.w * (self.__PhysicsDisplayRatio/6)
         self.__display.y -= self.__display.h * (self.__PhysicsDisplayRatio/6)
-        print("Display (w,h,x,y): "+str(self.__display.w) + "," + str(self.__display.h) + "," + str(self.__display.x) + "," + str(self.__display.y))
+        print("\nPhysicsEngine")
+        print("   '->Display (w,h,x,y): "+str(self.__display.w) + "," + str(self.__display.h) + "," + str(self.__display.x) + "," + str(self.__display.y))
         
     def AddEntityToPhysics(self,entity):    #Add the entity to a list so i can be manage by the system and updated when it need
         if(self.__allEntitys.__contains__(entity) ==  False):

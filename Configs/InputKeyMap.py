@@ -1,4 +1,3 @@
-import pygame
 from classes.InputSystem.InputClass import Input
 from classes.InputSystem.Keys import Key
 import keyboard

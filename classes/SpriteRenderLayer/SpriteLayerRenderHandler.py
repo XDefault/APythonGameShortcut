@@ -1,7 +1,7 @@
 import pygame
 from classes.EntityClasses.Entities import Entity
 
-class Render:
+class __Render:
 
     toRender = []
     allLayers = []
@@ -54,3 +54,14 @@ class BackgroundLayer(Layer):
 
     def AddToLayer(self,spriteToRender=Entity):
         self.sprites.append(spriteToRender)
+
+__manager = __Render()
+
+def GetStaticManager():
+    global __manager
+    if(__manager == None):
+        try:
+            __manager = __Render()
+        except:
+            raise TypeError
+    return __manager
