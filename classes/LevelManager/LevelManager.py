@@ -10,7 +10,7 @@ class __LevelManager:
     def LoadLevel(self,LevelIndex):
         print("   '->Loading: " + self.__levels[LevelIndex].name)
         self.__InitLevelComponents(LevelIndex)
-        self.__RenderLevel(LevelIndex)
+        #self.__RenderLevel(LevelIndex)
         self.__CurrentLevel = self.__levels[LevelIndex]
         #raise NotImplementedError
 
@@ -30,10 +30,6 @@ class __LevelManager:
     def UnloadLevel(self,LevelIndex):
         print("   '->Unload Level: " + self.__levels[LevelIndex].name)
         raise NotImplementedError
-
-    def __RenderLevel(self,LevelIndex):
-        print("   '->Render Level: " + self.__levels[LevelIndex].name)
-        raise NotImplementedError
     
     def __InitLevelComponents(self,LevelIndex):
         print("      '->Init Level: " + self.__levels[LevelIndex].name)
@@ -43,8 +39,11 @@ class __LevelManager:
     def ArrangeLevelOrder(self):
         print("\nLevelManager")
         print("   '->Levels Rearranged")
-        self.__levels.sort(key=lambda  n: n.GetIndex)
+        self.__levels.sort(key=lambda  n: n.GetIndex())
         print("   '->Current Level Order: " + str([str(e.index.__str__()+":"+e.name) for e in self.__levels]))
+
+    def UpdateLevelEntities(self):
+        self.__CurrentLevel.UpdateEntities()
 
 __manager = __LevelManager()
 

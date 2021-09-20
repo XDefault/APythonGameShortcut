@@ -74,11 +74,11 @@ eventHandler = EventHandler.GetStaticHandler() #Using the event handler in the s
 inputManager.subscribeObserver(player2.ControlledMovementExample)   #Setting the fuctions that should be notify  
                                                                     #when the player hits a key on the keyboard
 
-levelManager = LevelManager.GetStaticManager()      #Using the manager inside the script so there never more than one
-levelManager.AddLevelToList(ExampleLevelClass())    #Adding the level to the manager list
-levelManager.ArrangeLevelOrder()                    #Arranging the order of the levels based on their index var
-#levelManager.LoadLevel(0)                          #Load the first item on the level list
-levelManager.LoadLevelWithIndex(1)                  #Load level with the internal index of 1
+levelManager = LevelManager.GetStaticManager()              #Using the manager inside the script so there never more than one
+levelManager.AddLevelToList(ExampleLevelClass(render))      #Adding the level to the manager list and passing the render   
+levelManager.ArrangeLevelOrder()                            #Arranging the order of the levels based on their index var
+#levelManager.LoadLevel(0)                                  #Load the first item on the level list
+levelManager.LoadLevelWithIndex(1)                          #Load level with the internal index of 1
 
 myText = pygame.font.SysFont('Comic Sans MS',30)
 
@@ -97,6 +97,7 @@ while True:
     Displaysurf.fill(COLORS.GRAY)
     
     playerGroup.update()
+    levelManager.UpdateLevelEntities() #Update entities on current loaded level
 
     render.DrawLayers(Displaysurf)     #Render the layers to the display
 
