@@ -75,7 +75,8 @@ inputManager.subscribeObserver(player2.ControlledMovementExample)   #Setting the
                                                                     #when the player hits a key on the keyboard
 
 levelManager = LevelManager.GetStaticManager()              #Using the manager inside the script so there never more than one
-levelManager.AddLevelToList(ExampleLevelClass(render))      #Adding the level to the manager list and passing the render   
+levelManager.SetRenderManager(render)                       #Passing the render manager so level class can add entities to a layer to be render
+levelManager.AddLevelToList(ExampleLevelClass())            #Adding the level to the manager list and passing the render   
 levelManager.ArrangeLevelOrder()                            #Arranging the order of the levels based on their index var
 #levelManager.LoadLevel(0)                                  #Load the first item on the level list
 levelManager.LoadLevelWithIndex(1)                          #Load level with the internal index of 1

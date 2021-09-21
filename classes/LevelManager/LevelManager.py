@@ -3,12 +3,14 @@ class __LevelManager:
 
     __levels = []
     __CurrentLevel = ""
+    __render = ""
 
     def AddLevelToList(self,level):
         self.__levels.append(level)
     
     def LoadLevel(self,LevelIndex):
         print("   '->Loading: " + self.__levels[LevelIndex].name)
+        self.__levels[LevelIndex].SetRenderManager(self.__render)
         self.__InitLevelComponents(LevelIndex)
         #self.__RenderLevel(LevelIndex)
         self.__CurrentLevel = self.__levels[LevelIndex]
@@ -44,6 +46,9 @@ class __LevelManager:
 
     def UpdateLevelEntities(self):
         self.__CurrentLevel.UpdateEntities()
+
+    def SetRenderManager(self,render):
+        self.__render = render
 
 __manager = __LevelManager()
 

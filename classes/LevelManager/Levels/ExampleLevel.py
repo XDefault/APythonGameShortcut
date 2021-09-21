@@ -5,14 +5,14 @@ class ExampleLevelClass(Level):
 
     exampleGroup = ""
 
-
-    def __init__(self,render=None):
-        super(ExampleLevelClass,self).__init__(render)
+    def __init__(self):
+        super().__init__()
         self.name = "Example Level"
         self.index = 1
 
     def InitObjects(self):
         super().InitObjects()                   #This is just to debug, it can be ignore
+
         entity = staticEntity("static_obj")
         entity.SpawnPoint(30,100)
 

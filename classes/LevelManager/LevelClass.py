@@ -2,11 +2,13 @@ from classes.EntityClasses.Entities import Entity
 
 class Level:
 
-    def __init__(self,render):
+    RenderManager = ""
+
+    def __init__(self):
         self.name = "name"
         self.__index = 0
         self.levelEntities = []
-        self.RenderManager = render
+        
 
     def AddEntityToLevel(self,item=Entity):
         self.levelEntities.append(item)
@@ -22,3 +24,6 @@ class Level:
         #print("         '->UpdateEntities: " + self.name)
         for o in self.levelEntities:
             o.update()
+
+    def SetRenderManager(self,render):
+        self.RenderManager = render
