@@ -34,6 +34,19 @@ class __LevelManager:
 
         print("      '->No Level with Index "+ str(searchIndex)+" was Found")
 
+    def LoadLevelWithName(self,searchName=str):
+        index = 0
+        print("   '->Searching Level with Name: " + searchName)
+        for l in self.__levels:
+            print("      '->Level Name - " + str(l.name) + ": Checked")
+            if(l.name == searchName):
+                self.LoadLevel(index)
+                return
+
+            index += 1
+
+        print("      '->No Level with Name "+ searchName +" was Found")
+
     def UnloadLevel(self,LevelIndex):
         print("   '->Unload Level: " + self.__levels[LevelIndex].name)
         raise NotImplementedError

@@ -79,7 +79,8 @@ levelManager.SetRenderManager(render)                       #Passing the render 
 levelManager.AddLevelToList(ExampleLevelClass())            #Adding the level to the manager list and passing the render   
 levelManager.ArrangeLevelOrder()                            #Arranging the order of the levels based on their index var
 #levelManager.LoadLevel(0)                                  #Load the first item on the level list
-levelManager.LoadLevelWithIndex(1)                          #Load level with the internal index of 1
+#levelManager.LoadLevelWithIndex(1)                          #Load level with the internal index of 1
+levelManager.LoadLevelWithName(searchName="Example Level")
 
 myText = pygame.font.SysFont('Comic Sans MS',30)
 
