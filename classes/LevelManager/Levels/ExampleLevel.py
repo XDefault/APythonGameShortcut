@@ -16,6 +16,4 @@ class ExampleLevelClass(Level):
         entity = staticEntity("static_obj")
         entity.SpawnPoint(30,100)
 
-        self.RenderManager.allLayers[0].AddToLayer(entity)
-
-        self.AddEntityToLevel(entity)
+        self.AddEntityToLevel(entity,onIndexLayer=0)    #Add Entity to the level and adds to a render layer

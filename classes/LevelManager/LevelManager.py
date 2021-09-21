@@ -2,7 +2,8 @@
 class __LevelManager:
 
     __levels = []
-    __CurrentLevel = ""
+    __CurrentLevel = None
+    __CurrentLevelIndex = -9999
     __render = ""
 
     def AddLevelToList(self,level):
@@ -10,11 +11,15 @@ class __LevelManager:
     
     def LoadLevel(self,LevelIndex):
         print("   '->Loading: " + self.__levels[LevelIndex].name)
+       
+        #if(self.__CurrentLevel != None):                    #<--May be remove
+        #    self.UnloadLevel(self.__CurrentLevelIndex)
+
         self.__levels[LevelIndex].SetRenderManager(self.__render)
         self.__InitLevelComponents(LevelIndex)
-        #self.__RenderLevel(LevelIndex)
+
         self.__CurrentLevel = self.__levels[LevelIndex]
-        #raise NotImplementedError
+        self.__CurrentLevelIndex = LevelIndex
 
     def LoadLevelWithIndex(self,searchIndex):
         index = 0

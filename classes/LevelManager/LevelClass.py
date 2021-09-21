@@ -2,7 +2,7 @@ from classes.EntityClasses.Entities import Entity
 
 class Level:
 
-    RenderManager = ""
+    __RenderManager = None
 
     def __init__(self):
         self.name = "name"
@@ -10,8 +10,9 @@ class Level:
         self.levelEntities = []
         
 
-    def AddEntityToLevel(self,item=Entity):
+    def AddEntityToLevel(self,item=Entity,onIndexLayer=int):
         self.levelEntities.append(item)
+        self.__RenderManager.allLayers[onIndexLayer].AddToLayer(item)
 
     def InitObjects(self):
         print("         '->InitObj: " + self.name)
@@ -26,4 +27,4 @@ class Level:
             o.update()
 
     def SetRenderManager(self,render):
-        self.RenderManager = render
+        self.__RenderManager = render
