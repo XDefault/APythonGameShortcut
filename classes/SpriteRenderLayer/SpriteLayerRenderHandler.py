@@ -42,7 +42,18 @@ class __Render:
         
         return layerToConvert.orderOfLayer          #No change was needed it
 
+    def GetIndexOfLayerWithName(self,searchName:str):
+        index = 0
+        for l in self.allLayers:
+            if (l.layerName == searchName):
+                return index
+            
+            index += 1
+
+        print("   '->No Layer with Name '" + searchName + "' Was Found")
+
 class Layer:
+    layerName = ""
     sprites = []
     orderOfLayer = 0
 

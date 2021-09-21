@@ -10,9 +10,10 @@ class Level:
         self.levelEntities = []
         
 
-    def AddEntityToLevel(self,item=Entity,onIndexLayer=int):
-        self.levelEntities.append(item)
-        self.__RenderManager.allLayers[onIndexLayer].AddToLayer(item)
+    def AddEntityToLevel(self,item=Entity,onNameLayer=str):
+        if(self.levelEntities.__contains__(item) == False):
+            self.levelEntities.append(item)
+            self.__RenderManager.allLayers[self.__RenderManager.GetIndexOfLayerWithName(onNameLayer)].AddToLayer(item)
 
     def InitObjects(self):
         print("         '->InitObj: " + self.name)

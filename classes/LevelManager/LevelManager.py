@@ -4,7 +4,7 @@ class __LevelManager:
     __levels = []
     __CurrentLevel = None
     __CurrentLevelIndex = -9999
-    __render = ""
+    __render = None
 
     def AddLevelToList(self,level):
         self.__levels.append(level)

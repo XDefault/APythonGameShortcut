@@ -56,9 +56,11 @@ render = RenderManager.GetStaticManager()
 #Set Sprite Layers
 layer1 = Layer()
 layer1.orderOfLayer = 0             #Normal Layers never stays a negative number, the system will make a positive number
+layer1.layerName = "Normal Layer"   #Setting a name so the level class can add entities to this layer
 
 layer2 = BackgroundLayer()
 layer2.orderOfLayer = 1             #Background Layers will always become a negative number, if it is set to 0 the system will make be -1
+layer2.layerName = "Background Layer"
 
 #Add entities to layers
 layer1.AddToLayer(player1)
@@ -79,8 +81,8 @@ levelManager.SetRenderManager(render)                       #Passing the render 
 levelManager.AddLevelToList(ExampleLevelClass())            #Adding the level to the manager list and passing the render   
 levelManager.ArrangeLevelOrder()                            #Arranging the order of the levels based on their index var
 #levelManager.LoadLevel(0)                                  #Load the first item on the level list
-#levelManager.LoadLevelWithIndex(1)                          #Load level with the internal index of 1
-levelManager.LoadLevelWithName(searchName="Example Level")
+#levelManager.LoadLevelWithIndex(1)                         #Load level with the internal index of 1
+levelManager.LoadLevelWithName(searchName="Example Level")  #Load level with the name "Example Level"
 
 myText = pygame.font.SysFont('Comic Sans MS',30)
 
