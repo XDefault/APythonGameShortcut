@@ -1,10 +1,8 @@
 import pygame
 import random
 from classes.SpriteSheetHandler.SpriteSheetHandler import SpriteSheet
-from Configs.ColorsConfig import COLORS
 from Configs.PhysicsConfig import *
 from Configs.ConfigurationHandler import Configuration
-from classes.InputSystem import InputManager
 
 class Entity(pygame.sprite.Sprite):
 
