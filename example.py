@@ -79,11 +79,12 @@ inputManager.subscribeObserver(player2.ControlledMovementExample)   #Setting the
 levelManager = LevelManager.GetStaticManager()              #Using the manager inside the script so there never more than one
 levelManager.SetRenderManager(render)                       #Passing the render manager so level class can add entities to a layer to be render
 levelManager.AddLevelToList(ExampleLevelClass())            #Adding the level to the manager list and passing the render   
-levelManager.ArrangeLevelOrder()                            #Arranging the order of the levels based on their index var
+levelManager.ArrangeLevelOrder()                            #Arranging the order of the levels based on their internal index variable
 #levelManager.LoadLevel(0)                                  #Load the first item on the level list
 #levelManager.LoadLevelWithIndex(1)                         #Load level with the internal index of 1
 levelManager.LoadLevelWithName(searchName="Example Level")  #Load level with the name "Example Level"
-#levelManager.UnloadLevel(0)                                #Stop rendering any entity previously loaded by the level, this already happens when you load a level
+                                                            #IMPORTANT ----> Loading any level will already unload the previous one by default
+#levelManager.UnloadLevel(0)                                #Stop rendering any entity previously loaded by the first level on the list
 #levelManager.UnloadLevelWithIndex(1)                       #Stop rendering any entity previously loaded by the level with the internal index of 1
 levelManager.UnloadLevelWithName(searchName="Example Level")#Stop rendering any entity previously loaded by the level with the name "Example Level"
 
