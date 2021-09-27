@@ -12,8 +12,8 @@ class __LevelManager:
     def LoadLevel(self,LevelIndex):
         print("   '->Loading: " + self.__levels[LevelIndex].name)
        
-        #if(self.__CurrentLevel != None):                    #<--May be remove
-        #    self.UnloadLevel(self.__CurrentLevelIndex)
+        if(self.__CurrentLevel != None):                    #<--May be remove
+            self.UnloadLevel(self.__CurrentLevelIndex)
 
         self.__levels[LevelIndex].SetRenderManager(self.__render)
         self.__InitLevelComponents(LevelIndex)
@@ -49,7 +49,33 @@ class __LevelManager:
 
     def UnloadLevel(self,LevelIndex):
         print("   '->Unload Level: " + self.__levels[LevelIndex].name)
-        raise NotImplementedError
+        self.__levels[LevelIndex].UnloadEntitiesOnLevel()
+
+    def UnloadLevelWithName(self,searchName=str):
+        index = 0
+        print("   '->Searching Level with Name: " + searchName)
+        for l in self.__levels:
+            print("      '->Level Name - " + str(l.name) + ": Checked")
+            if(l.name == searchName):
+                self.UnloadLevel(index)
+                return
+
+            index += 1
+
+        print("      '->No Level with Name "+ searchName +" was Found")
+
+    def UnloadLevelWithIndex(self,searchIndex):
+        index = 0
+        print("   '->Searching Level with internal index: " + str(searchIndex))
+        for l in self.__levels:
+            print("      '->Level Index " + str(l.index) + ": Checked")
+            if(l.index == searchIndex):
+                self.UnloadLevel(index)
+                return
+
+            index += 1
+
+        print("      '->No Level with Index "+ str(searchIndex)+" was Found")
     
     def __InitLevelComponents(self,LevelIndex):
         print("      '->Init Level: " + self.__levels[LevelIndex].name)

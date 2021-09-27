@@ -53,12 +53,24 @@ class __Render:
         print("   '->No Layer with Name '" + searchName + "' Was Found")
 
 class Layer:
-    layerName = ""
-    sprites = []
-    orderOfLayer = 0
+
+    def __init__(self):
+        self.layerName = ""
+        self.sprites = []
+        self.orderOfLayer = 0
 
     def AddToLayer(self,spriteToRender=Entity):
         self.sprites.append(spriteToRender)
+
+    def CheckLayerForEntity(self,sprite=Entity):
+        if(self.sprites.__contains__(sprite)):
+            return True
+        else:
+            return False
+
+    def RemoveFromLayer(self,entity=Entity):
+        if(self.CheckLayerForEntity(entity) == True):
+            self.sprites.remove(entity)
 
 
 class BackgroundLayer(Layer):

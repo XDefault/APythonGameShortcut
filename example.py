@@ -83,6 +83,9 @@ levelManager.ArrangeLevelOrder()                            #Arranging the order
 #levelManager.LoadLevel(0)                                  #Load the first item on the level list
 #levelManager.LoadLevelWithIndex(1)                         #Load level with the internal index of 1
 levelManager.LoadLevelWithName(searchName="Example Level")  #Load level with the name "Example Level"
+#levelManager.UnloadLevel(0)                                #Stop rendering any entity previously loaded by the level, this already happens when you load a level
+#levelManager.UnloadLevelWithIndex(1)                       #Stop rendering any entity previously loaded by the level with the internal index of 1
+levelManager.UnloadLevelWithName(searchName="Example Level")#Stop rendering any entity previously loaded by the level with the name "Example Level"
 
 myText = pygame.font.SysFont('Comic Sans MS',30)
 

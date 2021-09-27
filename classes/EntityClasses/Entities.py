@@ -1,7 +1,7 @@
 import pygame
 import random
 from classes.SpriteSheetHandler.SpriteSheetHandler import SpriteSheet
-from Configs.PhysicsConfig import *
+from Configs.PhysicsConfig import Gravity,PhysicsUpdateRate
 from Configs.ConfigurationHandler import Configuration
 
 class Entity(pygame.sprite.Sprite):

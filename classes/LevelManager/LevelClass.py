@@ -29,3 +29,8 @@ class Level:
 
     def SetRenderManager(self,render):
         self.__RenderManager = render
+
+    def UnloadEntitiesOnLevel(self):
+        for e in self.levelEntities:
+            for l in self.__RenderManager.allLayers:
+                l.RemoveFromLayer(e)
