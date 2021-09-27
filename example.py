@@ -76,6 +76,7 @@ eventHandler = EventHandler.GetStaticHandler() #Using the event handler in the s
 inputManager.subscribeObserver(player2.ControlledMovementExample)   #Setting the fuctions that should be notify  
                                                                     #when the player hits a key on the keyboard
 
+#Set a static Level Manager and loading a level
 levelManager = LevelManager.GetStaticManager()              #Using the manager inside the script so there never more than one
 levelManager.SetRenderManager(render)                       #Passing the render manager so level class can add entities to a layer to be render
 levelManager.AddLevelToList(ExampleLevelClass())            #Adding the level to the manager list and passing the render   
