@@ -59,8 +59,8 @@ def GetStaticManager():
     if(__manager == None):
         try:
             __manager = __InputManagerHandler()
-        except:
-            raise TypeError
+        except Exception as e:
+            raise TypeError from e
     return __manager
 
 def On_Pressed(key):

@@ -17,7 +17,7 @@ class Level:
 
     def InitObjects(self):
         print("         '->InitObj: " + self.name)
-        pass
+        #pass
 
     def GetIndex(self):
         return self.__index

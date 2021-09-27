@@ -1,10 +1,10 @@
 import sys
-#import pygame
+import pygame
 from Configs.ConfigurationHandler import Configuration
 from Configs.ColorsConfig import COLORS
 from classes.Player.PlayerExampleModule import Player
 from classes.SpriteRenderLayer import SpriteLayerRenderHandler as RenderManager
-from classes.SpriteRenderLayer.SpriteLayerRenderHandler import *
+from classes.SpriteRenderLayer.SpriteLayerRenderHandler import Layer,BackgroundLayer
 from classes.InputSystem import InputManager
 from classes.Events import EventHandler
 from classes.PhysicsEngine.PhysicsSystem import PhysicsManager

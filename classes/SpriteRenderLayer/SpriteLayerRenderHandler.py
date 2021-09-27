@@ -73,6 +73,6 @@ def GetStaticManager():
     if(__manager == None):
         try:
             __manager = __Render()
-        except:
-            raise TypeError
+        except Exception as e:
+            raise TypeError from e
     return __manager
