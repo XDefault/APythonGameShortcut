@@ -1,6 +1,4 @@
-from classes.InputSystem.InputClass import Input
 from classes.InputSystem.Keys import Key
-import keyboard
 
 
 class __InputMap:
@@ -14,7 +12,7 @@ class __InputMap:
                     value = k.Input
                     break
 
-        except:
+        except ValueError:
             value = ""
         
         return value
@@ -27,7 +25,7 @@ class __InputMap:
                     value = k.actionName
                     break
         
-        except:
+        except ValueError:
             value = ""
 
         return value
@@ -43,7 +41,7 @@ class __InputMap:
                 else:
                     keyListSize -= 1
                     index += 1
-        except:
+        except ValueError:
             print("ERROR: No action has been found")
 
 __staticInputMap = __InputMap()
@@ -53,6 +51,6 @@ def GetStaticMap():
     if(__staticInputMap == None):
         try:
             __staticInputMap = __InputMap()
-        except:
-            raise TypeError
+        except Exception as e:
+            raise TypeError from e
     return __staticInputMap

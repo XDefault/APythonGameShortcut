@@ -1,10 +1,7 @@
-import pygame
 from classes.Events.EventTypes.InputEvent import InputEvent
 from classes.Events import EventHandler
 from classes.InputSystem.InputClass import Input
-from classes.InputSystem.Keys import Key
 from Configs import InputKeyMap as Map
-from classes.Events import EventHandler
 import keyboard
 
 class __InputManagerHandler:
