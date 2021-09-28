@@ -1,10 +1,8 @@
 import pygame
 import random
 from classes.SpriteSheetHandler.SpriteSheetHandler import SpriteSheet
-from Configs.ColorsConfig import COLORS
-from Configs.PhysicsConfig import *
+from Configs.PhysicsConfig import Gravity,PhysicsUpdateRate
 from Configs.ConfigurationHandler import Configuration
-from classes.InputSystem import InputManager
 
 class Entity(pygame.sprite.Sprite):
 
@@ -236,16 +234,17 @@ class AnimatedEntity(Entity):
 
     def SetAnimation(self,animationName=None):          #Change animation to the name specify
         animationSelect = 0
-        print(self.animations[0].animationName)
+        #print(self.animations[0].animationName)
 
         for animation in self.animations:
             if(animation.animationName == animationName):
-                print("\nEntity ID: "+self.GetIDName())
-                print("Animation Before: "+self.currentAnimation+" | Rect Before" + str(self.rectsPos))
+                print("\nAnimatedEntity")
+                print("   '->Entity ID: "+self.GetIDName())
+                print("   '->Animation Before: "+self.currentAnimation+" | Rect Before" + str(self.rectsPos))
                 self.currentAnimation = animation.animationName
                 self.rectsPos = self.animations[animationSelect].animation
                 self.images = self.ss.images_at(self.rectsPos,self.transparancyColor)
-                print("Animation After: "+self.currentAnimation+' | Rect After' + str(self.rectsPos))
+                print("   '->Animation After: "+self.currentAnimation+' | Rect After' + str(self.rectsPos))
                 self.index = 0
                 return
             else:
@@ -260,5 +259,5 @@ class AnimatedEntity(Entity):
 
 class staticEntity(Entity):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self,IDName=None):
+        super(staticEntity,self).__init__(IDName)

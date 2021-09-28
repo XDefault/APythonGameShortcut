@@ -1,7 +1,5 @@
 from classes.EntityClasses.Entities import AnimatedEntity
 from classes.EntityClasses.Animator import Animation
-from Configs.ConfigurationHandler import Configuration
-from Configs import InputKeyMap
 
 class Player(AnimatedEntity):
     
@@ -11,7 +9,6 @@ class Player(AnimatedEntity):
                     Animation("test",[(6,0,24,29),(6,0,24,29),(6,0,24,29),(6,0,24,29),(6,0,24,29),(6,0,24,29),(6,0,24,29),(6,0,24,29)])]
     
     Speed = 10
-    #movingTo = 1 #0 = left | 1 = right
 
     ObjWidth = 100
     ObjHeight = 150

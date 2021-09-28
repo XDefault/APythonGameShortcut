@@ -1,8 +1,3 @@
-import pygame
-
-from classes.InputSystem.InputClass import Input
-from classes.Events.EventClass import Event
-
 class __EventHandler:
 
     eventsLoopCheck = []
@@ -33,6 +28,6 @@ def GetStaticHandler():
     if(__staticEventHandler == None):
         try:
             __staticEventHandler = __EventHandler()
-        except:
-            raise TypeError
+        except Exception as e:
+            raise TypeError from e
     return __staticEventHandler

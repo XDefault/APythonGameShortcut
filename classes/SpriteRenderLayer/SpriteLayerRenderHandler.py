@@ -1,7 +1,7 @@
 import pygame
 from classes.EntityClasses.Entities import Entity
 
-class Render:
+class __Render:
 
     toRender = []
     allLayers = []
@@ -42,15 +42,49 @@ class Render:
         
         return layerToConvert.orderOfLayer          #No change was needed it
 
+    def GetIndexOfLayerWithName(self,searchName:str):
+        index = 0
+        for l in self.allLayers:
+            if (l.layerName == searchName):
+                return index
+            
+            index += 1
+
+        print("   '->No Layer with Name '" + searchName + "' Was Found")
+
 class Layer:
-    sprites = []
-    orderOfLayer = 0
+
+    def __init__(self):
+        self.layerName = ""
+        self.sprites = []
+        self.orderOfLayer = 0
 
     def AddToLayer(self,spriteToRender=Entity):
         self.sprites.append(spriteToRender)
+
+    def CheckLayerForEntity(self,sprite=Entity):
+        if(self.sprites.__contains__(sprite)):
+            return True
+        else:
+            return False
+
+    def RemoveFromLayer(self,entity=Entity):
+        if(self.CheckLayerForEntity(entity) == True):
+            self.sprites.remove(entity)
 
 
 class BackgroundLayer(Layer):
 
     def AddToLayer(self,spriteToRender=Entity):
         self.sprites.append(spriteToRender)
+
+__manager = __Render()
+
+def GetStaticManager():
+    global __manager
+    if(__manager == None):
+        try:
+            __manager = __Render()
+        except Exception as e:
+            raise TypeError from e
+    return __manager

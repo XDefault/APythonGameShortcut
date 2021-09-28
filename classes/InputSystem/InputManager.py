@@ -1,10 +1,7 @@
-import pygame
 from classes.Events.EventTypes.InputEvent import InputEvent
 from classes.Events import EventHandler
 from classes.InputSystem.InputClass import Input
-from classes.InputSystem.Keys import Key
 from Configs import InputKeyMap as Map
-from classes.Events import EventHandler
 import keyboard
 
 class __InputManagerHandler:
@@ -45,7 +42,8 @@ class __InputManagerHandler:
     def subscribeObserver(self,observer):   #Register functions to be notify without going though the EventManager
         if(self.__observers.__contains__(observer) == False):
             self.__observers.append(observer)
-            print("Observer Subcribed: " + str(observer))
+            print("\nInputManager")
+            print("   '->Observer Subcribed: " + str(observer))
 
     def NotifyObservers(self,command):  #Notify any funcion subcribed as a observer and pass the key that was pressed
         for o in self.__observers:
@@ -58,8 +56,8 @@ def GetStaticManager():
     if(__manager == None):
         try:
             __manager = __InputManagerHandler()
-        except:
-            raise TypeError
+        except Exception as e:
+            raise TypeError from e
     return __manager
 
 def On_Pressed(key):
