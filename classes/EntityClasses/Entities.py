@@ -16,6 +16,7 @@ class Entity(pygame.sprite.Sprite):
         self.__UseGravity:bool = True
         self.__velocity:float = [0,0]
         self.__collidingWith:pygame.sprite = []
+        self.__isGrounded:bool = False
 
         #public variables
         self.Rot_Angle = 0
@@ -71,33 +72,33 @@ class Entity(pygame.sprite.Sprite):
         self.Rot_Angle += angle
         self.image = pygame.transform.rotate(self.image, self.Rot_Angle)
 
+    def isGrounded(self):
+        return self.__isGrounded
 #Physics Related----------------------------------------------------------------------------------------------
 
     def UpdateEntityPhysics(self):                      #Update the physics of this entity
-        
+        self.__isGrounded = False
         if(self.__StaticPhysics == False):
             self.rect.move_ip(self.__velocity[0],self.__velocity[1])
             
             self.__DeAcceleratePhysic(3)
 
-            if(self.__UseGravity == True):
+            if(self.__UseGravity == True and self.__isGrounded == False):
                 self.__velocity[1] += Gravity
             
         self.__CheckCollisions()
         self.__collidingWith.clear()
 
     def HasCollisionWith(self,sprite:pygame.sprite):    #Return a bool if the entity has collision with the other entity
-        #if(self.rect != sprite.rect):
-            if(self.rect.colliderect(sprite.rect)): #if(self.rect.colliderect(sprite.rect)):
-                if(self.__IDName == sprite.GetIDName()):
-                    #print("Its the same " + self.__IDName)
-                    return False
-                #print(self.GetIDName() + " | " + sprite.GetIDName())
-                return True
-            else:
+       
+        if(self.rect.colliderect(sprite.rect)): #if(self.rect.colliderect(sprite.rect)):
+            if(self.__IDName == sprite.GetIDName()):
+                #print("Its the same " + self.__IDName)
                 return False
-        #else:
-        #    return False
+            #print(self.GetIDName() + " | " + sprite.GetIDName())
+            return True
+        else:
+            return False
 
     def AddCollisionToList(self,sprite:pygame.sprite):  #Add a collision to the list to be processed
         if not self.__collidingWith.__contains__(sprite):
@@ -113,23 +114,32 @@ class Entity(pygame.sprite.Sprite):
                 colDir = self.__GetCollisionDir(c)
 
                 if(colDir == "top"):
+                    if(self.__StaticPhysics == False):
+                        self.rect.move_ip(0,1)
                     if(self.__velocity[1] < 0):
                         currentY = 0
                         
                 elif(colDir == "left"):
+                    if(self.__StaticPhysics == False):
+                        self.rect.move_ip(1,0)
                     if(self.__velocity[0] > 0):
                         currentX = 0
                         
                 elif(colDir == "right"):
+                    if(self.__StaticPhysics == False):
+                        self.rect.move_ip(-1,0)
                     if(self.__velocity[0]<0):
                         currentX = 0
 
                 elif(colDir == "bottom"):
+                    if(self.__StaticPhysics == False):
+                        self.rect.move_ip(0,-1)
+                        self.__isGrounded = True
                     if(self.__velocity[1] > 0):
                         currentY = 0
                 
-                #if(self.__IDName == "Player"):
-                #    print(self.__IDName + " has collision from " + dir)
+                #if(self.__IDName == "Player1" or self.__IDName == "Player2"):
+                #    print(self.__IDName + " has collision from " + colDir)
 
         self.SetVelocity(currentX,currentY)
 
@@ -192,6 +202,8 @@ class Entity(pygame.sprite.Sprite):
     def StaticPhysics(self,switch:bool):                #Change the physics to be controlled by something else
         self.__StaticPhysics = switch
 
+    def GetStaticPhysics(self):
+        return self.__StaticPhysics
 #ID Related---------------------------------------------------------------------------------------------------
 
     def GetIDName(self):
@@ -257,7 +269,9 @@ class AnimatedEntity(Entity):
         if(key != ""):
             self.SetAnimation("test")
 
-class staticEntity(Entity):
+class StaticEntity(Entity):
 
     def __init__(self,IDName=None):
-        super(staticEntity,self).__init__(IDName)
+        super(StaticEntity,self).__init__(IDName)
+        super(StaticEntity,self).UseGravity(False)
+        super(StaticEntity,self).StaticPhysics(True)

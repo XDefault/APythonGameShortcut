@@ -1,5 +1,5 @@
 from classes.LevelManager.LevelClass import Level
-from classes.EntityClasses.Entities import staticEntity
+from classes.EntityClasses.Entities import StaticEntity
 
 class ExampleLevelClass(Level):
 
@@ -13,7 +13,7 @@ class ExampleLevelClass(Level):
     def InitObjects(self):
         super().InitObjects()                   #This is just to debug, it can be ignore
 
-        entity = staticEntity("static_obj")
+        entity = StaticEntity("static_obj")
         entity.SpawnPoint(30,100)
 
         self.AddEntityToLevel(entity,onNameLayer="Normal Layer")    #Add Entity to the level and adds to a render layer

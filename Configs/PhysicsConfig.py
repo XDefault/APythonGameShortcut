@@ -1,2 +1,2 @@
-PhysicsUpdateRate = 0.04
-Gravity = 1
+PhysicsUpdateRate = 0.01
+Gravity = 0.3

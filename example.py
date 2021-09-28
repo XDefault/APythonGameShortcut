@@ -3,6 +3,7 @@ import pygame
 from Configs.ConfigurationHandler import Configuration
 from Configs.ColorsConfig import COLORS
 from classes.Player.PlayerExampleModule import Player
+from classes.EntityClasses.Entities import StaticEntity,Entity
 from classes.SpriteRenderLayer import SpriteLayerRenderHandler as RenderManager
 from classes.SpriteRenderLayer.SpriteLayerRenderHandler import Layer,BackgroundLayer
 from classes.InputSystem import InputManager
@@ -27,29 +28,39 @@ currentGameLang = LangManager.GetTextByValue("Lang")    #Get the text in json fi
 #Set Entities And Groups
 
 #Setting Entities can be done inside a level class------------------------------------------------------------
-player1 = Player()              #Creating a player and not setting a ID so a random will be generated
-player1.SetIDName("Player1")    #Setting a ID through a function
-player1.UseGravity(False)       #Setting the player to not be affected by gravity
-player1.SpawnPoint(50,500)      #Setting the SpawnPoint Position
-     
-player2 = Player("Player2")  #Creating a second player and setting a ID right at the start
-player2.StaticPhysics(False) #Setting the player physics to be controlled by the Physics Engine
-player2.SpawnPoint(50,300)   #Setting the SpawnPoint Position
-player2.UseGravity(True)     #Setting the player to not be affected by gravity
+staticEntity = StaticEntity()       #Creating a Static Entity and not setting a ID so a random will be generated
+staticEntity.SetIDName("Floor1")    #Setting a ID through a function
+#staticEntity.UseGravity(False)     #Static entities by default are set to not be affected by gravity
+staticEntity.SpawnPoint(150,500)    #Setting the SpawnPoint Position
+
+staticEntity.Scale(300,100)         #IMPORTANT ----> There is a bug in any entity other than the animated, the rect will not initialized correctly
+                                    #for now using scale fix the problem, until a proprer fix be made use scale to set the size of the entity
+
+normalEntity = Entity("Floor2")     #Creating a Normal Entity and setting a ID right at the start
+normalEntity.UseGravity(False)      #Setting to not be affected by gravity
+normalEntity.SpawnPoint(350,300)    #Setting a SpawnPoint Position
+normalEntity.StaticPhysics(True)    #Setting so physics are not to be controlled by the Physics Engine, it will still stop other entities
+normalEntity.Scale(50,100)
+
+player1 = Player("Player1")  #Creating a player and setting a ID right at the start
+player1.StaticPhysics(False) #Setting the player physics to be controlled by the Physics Engine
+player1.SpawnPoint(50,300)   #Setting the SpawnPoint Position
+player1.UseGravity(True)     #Setting the player to be affected by gravity
 #--------------------------------------------------------------------------------------------------------------
 
 print("\nEntities Info")
-print("   '->player1 ID: "+player1.GetIDName()) #Printing the ID for the example above
-print("   '->player2 ID: "+player2.GetIDName()) #Printing the ID for the example above
+print("   '->staticEntity ID: "+staticEntity.GetIDName())   #Printing the ID for the example above
+print("   '->normalEntity ID: "+normalEntity.GetIDName())
+print("   '->player1 ID: "+player1.GetIDName())             #Printing the ID for the example above
 
-playerGroup = pygame.sprite.Group(player1)  #Setting up a group of sprites
-playerGroup.add(player2)                    #Adding up the second player as part of the group
-
+playerGroup = pygame.sprite.Group(staticEntity) #Setting up a group of sprites
+playerGroup.add(player1)                        #Adding up the second player as part of the group
+playerGroup.add(normalEntity)
 #Set Physics Engine
-PEngine = PhysicsManager(Displaysurf)       #Passing the Display of the game to the Physics Engine
-PEngine.AddEntityToPhysics(player1)         #Setting the entities that should be affected by the Physics Engine
-PEngine.AddEntityToPhysics(player2)
-
+PEngine = PhysicsManager(Displaysurf)           #Passing the Display of the game to the Physics Engine
+PEngine.AddEntityToPhysics(staticEntity)        #Setting the entities that should be affected by the Physics Engine
+PEngine.AddEntityToPhysics(player1)
+PEngine.AddEntityToPhysics(normalEntity)
 #Set Render
 render = RenderManager.GetStaticManager()
 
@@ -63,9 +74,9 @@ layer2.orderOfLayer = 1             #Background Layers will always become a nega
 layer2.layerName = "Background Layer"
 
 #Add entities to layers
-layer1.AddToLayer(player1)
-layer2.AddToLayer(player2)
-
+layer1.AddToLayer(staticEntity)
+layer2.AddToLayer(player1)
+layer1.AddToLayer(normalEntity)
 #Set Layer To Render
 render.AddLayerToRender(layer1)
 render.AddLayerToRender(layer2)
@@ -73,7 +84,7 @@ render.AddLayerToRender(layer2)
 #Set a static Input Manager and Event Handler
 inputManager = InputManager.GetStaticManager() #Using the manager inside the script so there never more than one
 eventHandler = EventHandler.GetStaticHandler() #Using the event handler in the script so there never more than one
-inputManager.subscribeObserver(player2.ControlledMovementExample)   #Setting the fuctions that should be notify  
+inputManager.subscribeObserver(player1.ControlledMovementExample)   #Setting the fuctions that should be notify  
                                                                     #when the player hits a key on the keyboard
 
 #Set a static Level Manager and loading a level
@@ -115,7 +126,9 @@ while True:
     
     #Draw the text to the screen
     Displaysurf.blit(textSurface,(0,0))
+    pygame.draw.rect(Displaysurf,COLORS.RED,player1.rect,3)
+    pygame.draw.rect(Displaysurf,COLORS.BLUE,staticEntity.rect,3)
+    pygame.draw.rect(Displaysurf,COLORS.GREEN,normalEntity.rect,3)
     
     pygame.display.update()
-
     FramePerSec.tick(Configuration.FPS)

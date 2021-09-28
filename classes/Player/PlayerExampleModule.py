@@ -10,9 +10,6 @@ class Player(AnimatedEntity):
     
     Speed = 10
 
-    ObjWidth = 100
-    ObjHeight = 150
-
     def __init__(self,ID=None):
         super(Player,self).__init__(ID)
 
@@ -24,10 +21,10 @@ class Player(AnimatedEntity):
 
     def ControlledMovementExample(self,keydown):
         if(keydown.key == "up"):
-            self.moveByPhysics(0,-1)
+            self.moveByPhysics(0,-30)
         elif(keydown.key == "down"):
             self.moveByPhysics(0,1)
         elif(keydown.key == "left"):
-            self.moveByPhysics(-1,0)
+            self.moveByPhysics(-3,0)
         elif(keydown.key == "right"):
-            self.moveByPhysics(1,0)
+            self.moveByPhysics(3,0)

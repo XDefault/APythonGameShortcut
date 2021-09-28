@@ -19,7 +19,7 @@ class PhysicsManager:
             if(self.__display.colliderect(s.rect)):
                 self.__ToUpdate.append(s)       #Add the entity that is inside the range to a list
 
-        self.__UpdateCalculationPhysics()       #Not implemented
+        #self.__UpdateCalculationPhysics()       #Not implemented
 
         self.__Timer = 0.0                      #Reset the timer
 
@@ -46,20 +46,21 @@ class PhysicsManager:
     def __CheckCollisions(self):      #Check for collisions between the entities in a list
 
         for s in self.__ToUpdate:     #Check every entity againts any other in the list to see if its has any collision
-
+            if(s.GetStaticPhysics() == True):
+                continue
             for c in self.__ToUpdate:
                 if(s.HasCollisionWith(c)):   
                     s.AddCollisionToList(c) #Adds any collision that happens into a list
                 
-            s.UpdateEntityPhysics()         #Update each entity physics
+                s.UpdateEntityPhysics()         #Update each entity physics
 
         self.__ToUpdate.clear()             #Clear the list for next frame
 
     def __UpdateCalculationPhysics(self):
         try:
-            raise NotImplementedError       #Will always pass
-        except:
-            pass
+            raise NotImplementedError
+        except Exception as e:
+            raise ValueError from e
 
     def Update(self):
         self.__Timer += 1/(Configuration.FPS)
