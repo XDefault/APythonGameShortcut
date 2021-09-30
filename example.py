@@ -126,6 +126,8 @@ while True:
     
     #Draw the text to the screen
     Displaysurf.blit(textSurface,(0,0))
+    
+    #Show the rect of entities
     pygame.draw.rect(Displaysurf,COLORS.RED,player1.rect,1)
     pygame.draw.rect(Displaysurf,COLORS.BLUE,staticEntity.rect,1)
     pygame.draw.rect(Displaysurf,COLORS.GREEN,normalEntity.rect,1)
