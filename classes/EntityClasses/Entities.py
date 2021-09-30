@@ -1,7 +1,7 @@
 import pygame
 import random
 from classes.SpriteSheetHandler.SpriteSheetHandler import SpriteSheet
-from Configs.PhysicsConfig import Gravity,PhysicsUpdateRate
+from Configs.PhysicsConfig import Gravity,PhysicsUpdateRate,DisInsideCollisionToDetect
 from Configs.ConfigurationHandler import Configuration
 
 class Entity(pygame.sprite.Sprite):
@@ -115,25 +115,29 @@ class Entity(pygame.sprite.Sprite):
 
                 if(colDir == "top"):
                     if(self.__StaticPhysics == False):
-                        self.rect.move_ip(0,1)
+                        if(self.__CheckDistanceInsideCollision(c,colDir) > DisInsideCollisionToDetect):
+                            self.rect.move_ip(0,1)
                     if(self.__velocity[1] < 0):
                         currentY = 0
                         
                 elif(colDir == "left"):
                     if(self.__StaticPhysics == False):
-                        self.rect.move_ip(1,0)
+                        if(self.__CheckDistanceInsideCollision(c,colDir) > DisInsideCollisionToDetect):
+                            self.rect.move_ip(1,0)
                     if(self.__velocity[0] > 0):
                         currentX = 0
                         
                 elif(colDir == "right"):
                     if(self.__StaticPhysics == False):
-                        self.rect.move_ip(-1,0)
+                        if(self.__CheckDistanceInsideCollision(c,colDir) > DisInsideCollisionToDetect):
+                            self.rect.move_ip(-1,0)
                     if(self.__velocity[0]<0):
                         currentX = 0
 
                 elif(colDir == "bottom"):
                     if(self.__StaticPhysics == False):
-                        self.rect.move_ip(0,-1)
+                        if(self.__CheckDistanceInsideCollision(c,colDir) > DisInsideCollisionToDetect):
+                            self.rect.move_ip(0,-1)
                         self.__isGrounded = True
                     if(self.__velocity[1] > 0):
                         currentY = 0
@@ -142,6 +146,16 @@ class Entity(pygame.sprite.Sprite):
                 #    print(self.__IDName + " has collision from " + colDir)
 
         self.SetVelocity(currentX,currentY)
+    
+    def __CheckDistanceInsideCollision(self,sprite,Dir):
+        if(Dir == "top"):
+            return self.rect.top - sprite.rect.bottom
+        elif(Dir == "left"):
+            return self.rect.left - sprite.rect.right
+        elif(Dir == "bottom"):
+            return self.rect.bottom - sprite.rect.top
+        else:
+            return self.rect.right - sprite.rect.left
 
     def __GetCollisionDir(self,sprite:pygame.sprite):
         dr = abs(self.rect.right - sprite.rect.left)

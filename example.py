@@ -38,9 +38,9 @@ staticEntity.Scale(300,100)         #IMPORTANT ----> There is a bug in any entit
 
 normalEntity = Entity("Floor2")     #Creating a Normal Entity and setting a ID right at the start
 normalEntity.UseGravity(False)      #Setting to not be affected by gravity
-normalEntity.SpawnPoint(350,300)    #Setting a SpawnPoint Position
+normalEntity.SpawnPoint(350,400)    #Setting a SpawnPoint Position
 normalEntity.StaticPhysics(True)    #Setting so physics are not to be controlled by the Physics Engine, it will still stop other entities
-normalEntity.Scale(50,100)
+normalEntity.Scale(300,100)
 
 player1 = Player("Player1")  #Creating a player and setting a ID right at the start
 player1.StaticPhysics(False) #Setting the player physics to be controlled by the Physics Engine
@@ -126,9 +126,9 @@ while True:
     
     #Draw the text to the screen
     Displaysurf.blit(textSurface,(0,0))
-    pygame.draw.rect(Displaysurf,COLORS.RED,player1.rect,3)
-    pygame.draw.rect(Displaysurf,COLORS.BLUE,staticEntity.rect,3)
-    pygame.draw.rect(Displaysurf,COLORS.GREEN,normalEntity.rect,3)
+    pygame.draw.rect(Displaysurf,COLORS.RED,player1.rect,1)
+    pygame.draw.rect(Displaysurf,COLORS.BLUE,staticEntity.rect,1)
+    pygame.draw.rect(Displaysurf,COLORS.GREEN,normalEntity.rect,1)
     
     pygame.display.update()
     FramePerSec.tick(Configuration.FPS)
