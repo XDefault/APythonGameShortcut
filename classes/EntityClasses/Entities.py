@@ -21,7 +21,9 @@ class Entity(pygame.sprite.Sprite):
         #public variables
         self.Rot_Angle = 0
         self.Sprite = "images/InitSprite.jpg"
-        self.image = pygame.image.load(self.Sprite)
+        self.initImage = pygame.image.load(self.Sprite)
+        self.image = self.initImage
+        self.LoadedSprite = self.image
         self.surf = pygame.Surface((32,32))
         self.InitX = 30
         self.InitY = 100
@@ -44,7 +46,8 @@ class Entity(pygame.sprite.Sprite):
         else:
             self.SetIDName(IDName)
         
-
+    def UpdateLoadedSprite(self,sprite):
+        self.LoadedSprite = sprite
 
     def draw(self,surface):                             #Draw entity on screen
         surface.blit(self.image,self.rect)
@@ -70,7 +73,8 @@ class Entity(pygame.sprite.Sprite):
 
     def Rot_Center(self,angle):                         #Rotate the entity with the center as a pivot point
         self.Rot_Angle += angle
-        self.image = pygame.transform.rotate(self.image, self.Rot_Angle)
+        
+        self.image = pygame.transform.rotate(self.LoadedSprite, self.Rot_Angle)
 
     def isGrounded(self):
         return self.__isGrounded
@@ -115,21 +119,21 @@ class Entity(pygame.sprite.Sprite):
 
                 if(colDir == "top"):
                     if(self.__StaticPhysics == False):
-                        if(self.__CheckDistanceInsideCollision(c,colDir) > DisInsideCollisionToDetect):
+                        if(self.__CheckDistanceInsideCollision(c,colDir) > 0):
                             self.rect.move_ip(0,1)
                     if(self.__velocity[1] < 0):
                         currentY = 0
                         
                 elif(colDir == "left"):
                     if(self.__StaticPhysics == False):
-                        if(self.__CheckDistanceInsideCollision(c,colDir) > DisInsideCollisionToDetect):
+                        if(self.__CheckDistanceInsideCollision(c,colDir) > 0):
                             self.rect.move_ip(1,0)
                     if(self.__velocity[0] > 0):
                         currentX = 0
                         
                 elif(colDir == "right"):
                     if(self.__StaticPhysics == False):
-                        if(self.__CheckDistanceInsideCollision(c,colDir) > DisInsideCollisionToDetect):
+                        if(self.__CheckDistanceInsideCollision(c,colDir) > 0):
                             self.rect.move_ip(-1,0)
                     if(self.__velocity[0]<0):
                         currentX = 0
@@ -246,7 +250,6 @@ class AnimatedEntity(Entity):
         self.index = 0
         self.SetAnimation("idle")
         self.image = self.images[self.index]
-        self.surf = pygame.Surface((10,15))
         self.rect = self.surf.get_rect(center = (self.InitX,self.InitY))
     
     def update(self):                                   #Update the image on the entity
@@ -254,8 +257,10 @@ class AnimatedEntity(Entity):
 
         if(self.index >= len(self.images)):
             self.index = 0
-
-        self.image = self.images[self.index]
+        
+        self.UpdateLoadedSprite(self.images[self.index])
+        #self.image = self.LoadedSprite
+        self.Rot_Center(0)                              #This already update the self.image
         self.Scale(self.ObjWidth,self.ObjHeight)
 
     def SetAnimation(self,animationName=None):          #Change animation to the name specify
@@ -273,8 +278,8 @@ class AnimatedEntity(Entity):
                 print("   '->Animation After: "+self.currentAnimation+' | Rect After' + str(self.rectsPos))
                 self.index = 0
                 return
-            else:
-                animationSelect += 1
+            
+            animationSelect += 1
                 
         
         print("No Animation was Found")
