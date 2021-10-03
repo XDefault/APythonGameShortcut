@@ -32,9 +32,7 @@ staticEntity = StaticEntity()       #Creating a Static Entity and not setting a 
 staticEntity.SetIDName("Floor1")    #Setting a ID through a function
 #staticEntity.UseGravity(False)     #Static entities by default are set to not be affected by gravity
 staticEntity.SpawnPoint(150,500)    #Setting the SpawnPoint Position
-
-staticEntity.Scale(300,100)         #IMPORTANT ----> There is a bug in any entity other than the animated, the rect will not initialized correctly
-                                    #for now using scale fix the problem, until a proprer fix be made use scale to set the size of the entity
+staticEntity.Scale(300,100)         
 
 normalEntity = Entity("Floor2")     #Creating a Normal Entity and setting a ID right at the start
 normalEntity.UseGravity(False)      #Setting to not be affected by gravity

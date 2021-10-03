@@ -12,6 +12,7 @@ class Player(AnimatedEntity):
 
     def __init__(self,ID=None):
         super(Player,self).__init__(ID)
+        self.ObjWidth = 50
 
     def AutoMoveToTheSides(self):
         if(self.rect.right <=self.InitX or self.rect.right >= self.InitX + self.TravelDist):

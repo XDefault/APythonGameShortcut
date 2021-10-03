@@ -27,7 +27,7 @@ class Entity(pygame.sprite.Sprite):
         self.surf = pygame.Surface((32,32))
         self.InitX = 30
         self.InitY = 100
-        self.ObjWidth = 50
+        self.ObjWidth = 100
         self.ObjHeight = 100
         #self.rect = self.surf.get_rect(center = (self.InitX,self.InitY))
         self.rect = self.LoadedSprite.get_rect(center=(self.InitX,self.InitY))
@@ -50,6 +50,9 @@ class Entity(pygame.sprite.Sprite):
     def UpdateLoadedSprite(self,sprite):
         self.LoadedSprite = sprite
 
+    def UpdateRect(self):
+        self.rect = self.image.get_rect(center=self.rect.center)
+
     def draw(self,surface):                             #Draw entity on screen
         surface.blit(self.image,self.rect)
 
@@ -61,6 +64,9 @@ class Entity(pygame.sprite.Sprite):
         self.InitY = newY
         self.rect = self.surf.get_rect(center = (self.InitX,self.InitY))
 
+    def update(self):
+        self.UpdateRect()
+
 #Normal Entity Alterations------------------------------------------------------------------------------------
     def move(self,xAmount,yAmount):                     #Move the entity without the physics
         self.rect.move_ip(xAmount,yAmount)
@@ -70,13 +76,14 @@ class Entity(pygame.sprite.Sprite):
         self.ObjHeight = y
 
         self.image = pygame.transform.scale(self.image,(self.ObjWidth,self.ObjHeight))
-        self.rect = self.image.get_rect(center=self.rect.center)
+        self.UpdateLoadedSprite(self.image)
+        #self.rect = self.image.get_rect(center=self.rect.center)
 
     def Rot_Center(self,angle):                         #Rotate the entity with the center as a pivot point
         self.Rot_Angle += angle
         
         self.image = pygame.transform.rotate(self.LoadedSprite, self.Rot_Angle)
-        #self.Scale(self.ObjWidth,self.ObjHeight)
+        #self.rect = self.image.get_rect(center=self.rect.center)
 
     def isGrounded(self):
         return self.__isGrounded
@@ -266,6 +273,7 @@ class AnimatedEntity(Entity):
         self.UpdateLoadedSprite(self.images[self.index])
         self.Rot_Center(0)
         self.Scale(self.ObjWidth,self.ObjHeight)
+        self.UpdateRect()
 
     def SetAnimation(self,animationName=None):          #Change animation to the name specify
         animationSelect = 0
