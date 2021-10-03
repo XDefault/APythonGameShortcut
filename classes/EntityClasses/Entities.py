@@ -91,16 +91,16 @@ class Entity(pygame.sprite.Sprite):
 
     def UpdateEntityPhysics(self):                      #Update the physics of this entity
         self.__isGrounded = False
-        if(self.__StaticPhysics == False):
-            self.rect.move_ip(self.__velocity[0],self.__velocity[1])
-            
+        self.__CheckCollisions()
+
+        if(self.__StaticPhysics == False):    
             self.__DeAcceleratePhysic(3)
 
             if(self.__UseGravity == True and self.__isGrounded == False):
                 self.__velocity[1] += Gravity
             
-        self.__CheckCollisions()
-        self.__collidingWith.clear()
+            self.rect.move_ip(self.__velocity[0],self.__velocity[1])
+            
 
     def HasCollisionWith(self,sprite:pygame.sprite):    #Return a bool if the entity has collision with the other entity
        
@@ -137,14 +137,14 @@ class Entity(pygame.sprite.Sprite):
                     if(self.__StaticPhysics == False):
                         if(self.__CheckDistanceInsideCollision(c,colDir) > 0):
                             self.rect.move_ip(1,0)
-                    if(self.__velocity[0] > 0):
+                    if(self.__velocity[0] < 0):
                         currentX = 0
                         
                 elif(colDir == "right"):
                     if(self.__StaticPhysics == False):
                         if(self.__CheckDistanceInsideCollision(c,colDir) > 0):
                             self.rect.move_ip(-1,0)
-                    if(self.__velocity[0]<0):
+                    if(self.__velocity[0]>0):
                         currentX = 0
 
                 elif(colDir == "bottom"):
@@ -205,10 +205,11 @@ class Entity(pygame.sprite.Sprite):
         #print("DeAccreleratePhysic")
 
     def moveByPhysics(self,xAmount,yAmount):            #Add a force to push the entity in a direction
-        if(self.__StaticPhysics == False):
-            self.__velocity[0] += (xAmount*10) * PhysicsUpdateRate
-            self.__velocity[1] += (yAmount*10) * PhysicsUpdateRate
-            #self.rect.move_ip(self.velocity[0],self.velocity[1])
+        if(self.__StaticPhysics == True):
+            return 
+        
+        self.__velocity[0] += (xAmount*10) * PhysicsUpdateRate
+        self.__velocity[1] += (yAmount*10) * PhysicsUpdateRate
 
     def GetVelocity(self):
         return self.__velocity

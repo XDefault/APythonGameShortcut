@@ -38,7 +38,7 @@ normalEntity = Entity("Floor2")     #Creating a Normal Entity and setting a ID r
 normalEntity.UseGravity(False)      #Setting to not be affected by gravity
 normalEntity.SpawnPoint(350,400)    #Setting a SpawnPoint Position
 normalEntity.StaticPhysics(True)    #Setting so physics are not to be controlled by the Physics Engine, it will still stop other entities
-normalEntity.Scale(300,100)
+#normalEntity.Scale(300,100)
 
 player1 = Player("Player1")  #Creating a player and setting a ID right at the start
 player1.StaticPhysics(False) #Setting the player physics to be controlled by the Physics Engine
