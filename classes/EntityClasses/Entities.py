@@ -75,6 +75,7 @@ class Entity(pygame.sprite.Sprite):
         self.Rot_Angle += angle
         
         self.image = pygame.transform.rotate(self.LoadedSprite, self.Rot_Angle)
+        self.Scale(self.ObjWidth,self.ObjHeight)
 
     def isGrounded(self):
         return self.__isGrounded
@@ -260,8 +261,8 @@ class AnimatedEntity(Entity):
         
         self.UpdateLoadedSprite(self.images[self.index])
         #self.image = self.LoadedSprite
-        self.Rot_Center(0)                              #This already update the self.image
-        self.Scale(self.ObjWidth,self.ObjHeight)
+        #self.Scale(self.ObjWidth,self.ObjHeight)
+        self.Rot_Center(0)                              #This already update the self.image and scale to the right size
 
     def SetAnimation(self,animationName=None):          #Change animation to the name specify
         animationSelect = 0
