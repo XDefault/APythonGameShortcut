@@ -21,7 +21,7 @@ class Player(AnimatedEntity):
         self.rect.move_ip(self.Speed,0)
 
     def ControlledMovementExample(self,keydown):
-        if(keydown.key == "up" and self.isGrounded):
+        if(keydown.key == "up" and self.isGrounded()):
             self.moveByPhysics(0,-100)
         elif(keydown.key == "down"):
             self.moveByPhysics(0,1)
