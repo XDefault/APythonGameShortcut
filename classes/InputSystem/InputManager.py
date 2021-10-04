@@ -13,6 +13,10 @@ class __InputManagerHandler:
 
     def AddKeyPressToList(self,key=None):
         if(key != None):
+            for k in self.__keysPressed:
+                if(k.key == key.key):
+                    return
+            
             self.__keysPressed.append(key)      #Added to the list so its get executed
 
     def ExecuteKeysPressed(self):
@@ -21,7 +25,7 @@ class __InputManagerHandler:
             self.__EventHandler.AddEventToSigleCheck(e)     #Send the Event to the Handler
             self.NotifyObservers(k)
         
-        self.__keysPressed.clear()        #Clears the list for the next frame
+        #self.__keysPressed.clear()        #Clears the list for the next frame
     
     def GetKeyEvents(self):
         return self.__keysPressed         #Returns the list of keys on the frame for outside uses
@@ -38,6 +42,24 @@ class __InputManagerHandler:
                 keyPressed = Input(s.actionName)  #Remap the user input
 
         self.AddKeyPressToList(keyPressed) #Add To a list of keys to be notify to the observers
+
+    def on_release(self,key):
+
+        keyPressed = None
+
+        if(self.__enableAllKeys):
+            keyPressed = Input(key.name) #Enable all the keys to be register e process by the manager
+        
+        for s in self.__Map.keys:      #Check keys on the list to see if the user input need it to be map to another key
+            if(s.Input == key.name):
+                keyPressed = Input(s.actionName)
+        
+        self.RemoveFromList(keyPressed.key)
+
+    def RemoveFromList(self,key):
+        for k in self.__keysPressed:
+            if(k.key == key):
+                self.__keysPressed.remove(k)
 
     def subscribeObserver(self,observer):   #Register functions to be notify without going though the EventManager
         if(self.__observers.__contains__(observer) == False):
@@ -64,4 +86,8 @@ def On_Pressed(key):
     #print(key.name)
     __manager.on_pressed(key)             #Send the key pressed to the InputManager
 
+def On_Release(key):
+    __manager.on_release(key)
+
+keyboard.on_release(callback=On_Release,suppress=True)  #Listen the keyboard for a key release
 keyboard.on_press(callback=On_Pressed,suppress=True)    #Listen the keyboard for a key press
