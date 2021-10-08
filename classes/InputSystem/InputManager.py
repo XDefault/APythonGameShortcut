@@ -41,7 +41,8 @@ class __InputManagerHandler:
             if(s.Input == key.name):
                 keyPressed = Input(s.actionName)  #Remap the user input
 
-        self.AddKeyPressToList(keyPressed) #Add To a list of keys to be notify to the observers
+        if(keyPressed != None):
+            self.AddKeyPressToList(keyPressed) #Add To a list of keys to be notify to the observers
 
     def on_release(self,key):
 
@@ -54,7 +55,8 @@ class __InputManagerHandler:
             if(s.Input == key.name):
                 keyPressed = Input(s.actionName)
         
-        self.RemoveFromList(keyPressed.key)
+        if(keyPressed != None):
+            self.RemoveFromList(keyPressed.key)
 
     def RemoveFromList(self,key):
         for k in self.__keysPressed:
