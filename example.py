@@ -12,6 +12,7 @@ from classes.PhysicsEngine.PhysicsSystem import PhysicsManager
 from classes.LanguageSystem import LanguageManager as LangManager
 from classes.LevelManager import LevelManager
 from classes.LevelManager.Levels.ExampleLevel import ExampleLevelClass
+from classes.Camera.CameraClass import Camera
 
 #Setup Game
 pygame.init()
@@ -54,13 +55,20 @@ print("   '->player1 ID: "+player1.GetIDName())             #Printing the ID for
 playerGroup = pygame.sprite.Group(staticEntity) #Setting up a group of sprites
 playerGroup.add(player1)                        #Adding up the second player as part of the group
 playerGroup.add(normalEntity)
+
 #Set Physics Engine
 PEngine = PhysicsManager(Displaysurf)           #Passing the Display of the game to the Physics Engine
 PEngine.AddEntityToPhysics(staticEntity)        #Setting the entities that should be affected by the Physics Engine
 PEngine.AddEntityToPhysics(player1)
 PEngine.AddEntityToPhysics(normalEntity)
+
 #Set Render
 render = RenderManager.GetStaticManager()
+
+#Set Camera
+camera = Camera()                               #Creating or setting up a camera can be done inside a level class
+render.SetCurrentCamera(camera)
+camera.SetCameraPos([-30,20])
 
 #Set Sprite Layers
 layer1 = Layer()
@@ -106,7 +114,7 @@ while True:
         if(event.type == pygame.QUIT):
             pygame.quit()
             sys.exit()
-    
+            
     inputManager.ExecuteKeysPressed()  #Execute key strokes
     eventHandler.EventsSingleCheck()   #Execute events and remove then from the list
     

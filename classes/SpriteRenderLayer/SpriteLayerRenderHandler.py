@@ -5,6 +5,7 @@ class __Render:
 
     toRender = []
     allLayers = []
+    __currentCamera = None
 
     def DrawLayers(self,Display):
         render = pygame.sprite.Group()
@@ -12,8 +13,8 @@ class __Render:
         for s in self.toRender:
             #print(self.GetLayerPriority(s))
             render.add(s.sprites)
-            
 
+        self.__UpdatePosRelativeToCamera()    
         render.draw(Display)
         render.empty()
     
@@ -51,6 +52,24 @@ class __Render:
             index += 1
 
         print("   '->No Layer with Name '" + searchName + "' Was Found")
+
+    def SetCurrentCamera(self,camera):
+        self.__currentCamera = camera
+
+    def __UpdatePosRelativeToCamera(self):
+        self.__currentCamera.update()
+
+        moveTo = self.__currentCamera.GetMoveTo()
+        x=moveTo[0]
+        y=moveTo[1]
+
+        if(x != 0 or y != 0):
+            for l in self.toRender:
+                for s in l.sprites:
+                    s.rect.centerx = s.rect.centerx - x
+                    s.rect.centery = s.rect.centery - y
+
+            self.__currentCamera.SetMoveTo([0,0])
 
 class Layer:
 
