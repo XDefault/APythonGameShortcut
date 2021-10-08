@@ -39,11 +39,11 @@ class Entity(pygame.sprite.Sprite):
             data = range(1,15000)
             newId = random.sample(data,1)
 
-            if(self.__UsedID.__contains__(newId)):
+            while(self.__UsedID.__contains__(newId)):
                 newId = random.sample(data,1)
-            else:
-                self.__UsedID.append(newId)
-                self.SetIDName(str(random.sample(data,1)))
+            
+            self.__UsedID.append(newId)
+            self.SetIDName(str(random.sample(data,1)))
         else:
             self.SetIDName(IDName)
         
