@@ -2,32 +2,33 @@ class __EventHandler:
 
     eventsLoopCheck = []
     eventsSingleCheck = []
-    
 
-    def AddEventToLoopCheck(self,event):                        #Add a event to be execute multiple times
-        if(self.eventsLoopCheck.__contains__(event) == False):
+
+    def add_event_to_loop_check(self,event):                        #Add a event to be execute multiple times
+        if not self.eventsLoopCheck.__contains__(event):
             self.eventsLoopCheck.append(event)
 
-    def AddEventToSigleCheck(self,event):                       #Add a event to be execute one single time
-        if(self.eventsSingleCheck.__contains__(event) == False):
+    def add_event_to_sigle_check(self,event):                       #Add a event to be execute one single time
+        if not self.eventsSingleCheck.__contains__(event):
             self.eventsSingleCheck.append(event)
 
-    def EventsLoopCheck(self):                                  #Execute events in the loop list
+    def events_loop_check(self):                                  #Execute events in the loop list
         for e in self.eventsLoopCheck:
-            e.Execute()
+            e.execute()
 
-    def EventsSingleCheck(self):                                #Execute events in the single list and remove the event from it
+    def events_single_check(self):                                #Execute events in the single list and remove the event from it
         for e in self.eventsSingleCheck:
-            e.Execute()
+            e.execute()
             self.eventsSingleCheck.remove(e)
 
-__staticEventHandler = __EventHandler()
+__STATICEVENTHANDLER = __EventHandler()
 
-def GetStaticHandler():
-    global __staticEventHandler
-    if(__staticEventHandler == None):
+def get_static_manager():
+    global __STATICEVENTHANDLER
+    if __STATICEVENTHANDLER is None:
         try:
-            __staticEventHandler = __EventHandler()
+            __STATICEVENTHANDLER = __EventHandler()
         except Exception as e:
             raise TypeError from e
-    return __staticEventHandler
+    return __STATICEVENTHANDLER
+    

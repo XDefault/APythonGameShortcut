@@ -1,68 +1,68 @@
 import pygame
-from Configs.PhysicsConfig import PhysicsUpdateRate
+from Configs.PhysicsConfig import PHYSICS_UPDATE_RATE
 from Configs.ConfigurationHandler import Configuration
 
 class PhysicsManager:
-    
-    __ToUpdate = []
-    __allEntitys:pygame.sprite = []
-    __Timer = 0.0
+
+    __to_update = []
+    __all_entitys:pygame.sprite = []
+    __timer = 0.0
     __display = pygame.rect
-    __PhysicsDisplayRatio = 2 #Extra size outside the screen that physics still should affect (1 = disable this function)
+    __physics_display_ratio = 2 #Extra size outside the screen that physics still should affect (1 = disable this function)
 
     def __init__(self,SurfaceDisplay:pygame.Surface):
-        self.__SetDisplay(SurfaceDisplay)
+        self.__set_display(SurfaceDisplay)
 
-    def __CheckEntitysToUpdate(self): #Check if entities are inside the of the range to be updated
+    def __check_entitys_to_update(self): #Check if entities are inside the of the range to be updated
 
-        for s in self.__allEntitys:
-            if(self.__display.colliderect(s.rect)):
-                self.__ToUpdate.append(s)       #Add the entity that is inside the range to a list
+        for s in self.__all_entitys:
+            if self.__display.colliderect(s.rect):
+                self.__to_update.append(s)       #Add the entity that is inside the range to a list
 
-        #self.__UpdateCalculationPhysics()       #Not implemented
+        #self.__update_calculation_physics()       #Not implemented
 
-        self.__Timer = 0.0                      #Reset the timer
+        self.__timer = 0.0                      #Reset the timer
 
-    def __SetDisplay(self,display:pygame.Surface):  #Set the size of the rectangle that only entities that are inside will update 
+    def __set_display(self,display:pygame.Surface): #Set the size of the rectangle that only entities that are inside will update
                                                     #their physics, this is based on the current size of the display
         self.__display = display.get_rect()
-        self.__display.w = self.__display.w * self.__PhysicsDisplayRatio
-        self.__display.h = self.__display.h * self.__PhysicsDisplayRatio
-        self.__display.x -= self.__display.w * (self.__PhysicsDisplayRatio/6)
-        self.__display.y -= self.__display.h * (self.__PhysicsDisplayRatio/6)
+        self.__display.w = self.__display.w * self.__physics_display_ratio
+        self.__display.h = self.__display.h * self.__physics_display_ratio
+        self.__display.x -= self.__display.w * (self.__physics_display_ratio/6)
+        self.__display.y -= self.__display.h * (self.__physics_display_ratio/6)
         print("\nPhysicsEngine")
         display = display.get_rect()
         print("   '->Display (w,h,x,y): " + str(display.w) + "," + str(display.h) + "," + str(display.x) + "," + str(display.y))
         print("   '->Active Physics Zone (w,h,x,y): "+str(self.__display.w) + "," + str(self.__display.h) + "," + str(self.__display.x) + "," + str(self.__display.y))
-        
-    def AddEntityToPhysics(self,entity):    #Add the entity to a list so i can be manage by the system and updated when it need
-        if(self.__allEntitys.__contains__(entity) ==  False):
-            self.__allEntitys.append(entity)
 
-    def __UpdatePhysics(self):       
-        if(self.__Timer >= PhysicsUpdateRate):  #Update the entities check at a regular interval set in the config file
-            self.__CheckEntitysToUpdate()
+    def add_entity_to_physics(self,entity):    #Add the entity to a list so i can be manage by the system and updated when it need
+        if not self.__all_entitys.__contains__(entity):
+            self.__all_entitys.append(entity)
 
-    def __CheckCollisions(self):      #Check for collisions between the entities in a list
+    def __update_physics(self):
+        if self.__timer >= PHYSICS_UPDATE_RATE:  #Update the entities check at a regular interval set in the config file
+            self.__check_entitys_to_update()
 
-        for s in self.__ToUpdate:     #Check every entity againts any other in the list to see if its has any collision
-            if(s.GetStaticPhysics() == True):
+    def __check_collisions(self):      #Check for collisions between the entities in a list
+
+        for s in self.__to_update:     #Check every entity againts any other in the list to see if its has any collision
+            if s.get_static_physics():
                 continue
-            for c in self.__ToUpdate:
-                if(s.HasCollisionWith(c)):   
-                    s.AddCollisionToList(c) #Adds any collision that happens into a list
-                
-                s.UpdateEntityPhysics()         #Update each entity physics
+            for c in self.__to_update:
+                if s.has_collision_with(c):
+                    s.add_collision_to_list(c) #Adds any collision that happens into a list
 
-        self.__ToUpdate.clear()             #Clear the list for next frame
+                s.update_entity_physics()         #Update each entity physics
 
-    def __UpdateCalculationPhysics(self):
+        self.__to_update.clear()             #Clear the list for next frame
+
+    def __update_calculation_physics(self):
         try:
             raise NotImplementedError
         except Exception as e:
             raise ValueError from e
 
-    def Update(self):
-        self.__Timer += 1/(Configuration.FPS)
-        self.__UpdatePhysics()
-        self.__CheckCollisions()
+    def update(self):
+        self.__timer += 1/(Configuration.FPS)
+        self.__update_physics()
+        self.__check_collisions()

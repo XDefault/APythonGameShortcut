@@ -1,3 +1,3 @@
-PhysicsUpdateRate = 0.01
-Gravity = 0.3
-DisInsideCollisionToDetect = 1
+PHYSICS_UPDATE_RATE = 0.01
+GRAVITY = 0.3
+DIS_INSIDE_COLLISION = 1

@@ -3,107 +3,105 @@ from classes.EntityClasses.Entities import Entity
 
 class __Render:
 
-    toRender = []
+    to_render = []
     allLayers = []
-    __currentCamera = None
+    __current_camera = None
 
-    def DrawLayers(self,Display):
+    def draw_layers(self,display):
         render = pygame.sprite.Group()
-        self.ReorderToPriority()
-        for s in self.toRender:
+        self.__reorder_to_priority()
+        for s in self.to_render:
             #print(self.GetLayerPriority(s))
             render.add(s.sprites)
 
-        self.__UpdatePosRelativeToCamera()    
-        render.draw(Display)
+        self.__update_pos_relative_to_camera()
+        render.draw(display)
         render.empty()
-    
-    def GetLayerPriority(self, layerList):
-        return layerList.orderOfLayer
 
-    def ReorderToPriority(self):
-        self.allLayers.sort(key=self.GetLayerPriority)
-        self.toRender = self.allLayers
+    def get_layer_priority(self, layer_list):
+        return layer_list.orderOfLayer
 
-    def AddLayerToRender(self,layer):
-        layer.orderOfLayer = self.__CheckForCorrectOrderNumber(layer)
+    def __reorder_to_priority(self):
+        self.allLayers.sort(key=self.get_layer_priority)
+        self.to_render = self.allLayers
+
+    def add_layer_to_render(self,layer):
+        layer.orderOfLayer = self.__check_for_correct_order_number(layer)
         self.allLayers.append(layer)
 
-    def __CheckForCorrectOrderNumber(self,layerToConvert):
-        if(isinstance(layerToConvert,BackgroundLayer) == False):    #If its a normal layer and its set to a negative number its converted to the same positive number
-            if(layerToConvert.orderOfLayer < 0):
-                return layerToConvert.orderOfLayer * -1
-            
-            return layerToConvert.orderOfLayer      #No Change was needed it
-        
-        if(layerToConvert.orderOfLayer == 0):       #Any Background in layer 0, get in layer -1 to avoid conflict with the normal layers
-            return -1
-        if(layerToConvert.orderOfLayer > 0):        #If its above 0 then its get convert to the same negative number
-            return layerToConvert.orderOfLayer * -1
-        
-        return layerToConvert.orderOfLayer          #No change was needed it
+    def __check_for_correct_order_number(self,layer_to_convert):
+        if not isinstance(layer_to_convert,BackgroundLayer):    #If its a normal layer and its set to a negative number its converted to the same positive number
+            if layer_to_convert.order_of_layer < 0:
+                return layer_to_convert.order_of_layer * -1
 
-    def GetIndexOfLayerWithName(self,searchName:str):
+            return layer_to_convert.order_of_layer      #No Change was needed it
+
+        if layer_to_convert.order_of_layer == 0:       #Any Background in layer 0, get in layer -1 to avoid conflict with the normal layers
+            return -1
+        if layer_to_convert.order_of_layer > 0:        #If its above 0 then its get convert to the same negative number
+            return layer_to_convert.order_of_layer * -1
+
+        return layer_to_convert.order_of_layer          #No change was needed it
+
+    def get_index_of_layer_with_name(self,search_name:str):
         index = 0
         for l in self.allLayers:
-            if (l.layerName == searchName):
+            if l.layer_name == search_name:
                 return index
-            
+
             index += 1
 
-        print("   '->No Layer with Name '" + searchName + "' Was Found")
+        print("   '->No Layer with Name '" + search_name + "' Was Found")
 
-    def SetCurrentCamera(self,camera):
-        self.__currentCamera = camera
+    def set_current_camera(self,camera):
+        self.__current_camera = camera
 
-    def __UpdatePosRelativeToCamera(self):
-        self.__currentCamera.update()
+    def __update_pos_relative_to_camera(self):
+        self.__current_camera.update()
 
-        moveTo = self.__currentCamera.GetMoveTo()
-        x=moveTo[0]
-        y=moveTo[1]
+        move_to = self.__current_camera.get_moveto()
+        _x=move_to[0]
+        _y=move_to[1]
 
-        if(x != 0 or y != 0):
-            for l in self.toRender:
-                for s in l.sprites:
-                    s.rect.centerx = s.rect.centerx - x
-                    s.rect.centery = s.rect.centery - y
+        if(_x != 0 or _y != 0):
+            for layer in self.to_render:
+                for sprite in layer.sprites:
+                    sprite.rect.centerx = sprite.rect.centerx - _x
+                    sprite.rect.centery = sprite.rect.centery - _y
 
-            self.__currentCamera.SetMoveTo([0,0])
+            self.__current_camera.set_moveto([0,0])
 
 class Layer:
 
     def __init__(self):
-        self.layerName = ""
+        self.layer_name = ""
         self.sprites = []
-        self.orderOfLayer = 0
+        self.order_of_layer = 0
 
-    def AddToLayer(self,spriteToRender=Entity):
-        self.sprites.append(spriteToRender)
+    def add_to_layer(self,sprite_to_render=Entity):
+        self.sprites.append(sprite_to_render)
 
-    def CheckLayerForEntity(self,sprite=Entity):
-        if(self.sprites.__contains__(sprite)):
+    def check_layer_for_entity(self,sprite=Entity):
+        if self.sprites.__contains__(sprite):
             return True
         else:
             return False
 
-    def RemoveFromLayer(self,entity=Entity):
-        if(self.CheckLayerForEntity(entity) == True):
+    def remove_from_layer(self,entity=Entity):
+        if self.check_layer_for_entity(entity) is True:
             self.sprites.remove(entity)
 
 
 class BackgroundLayer(Layer):
+    pass
 
-    def AddToLayer(self,spriteToRender=Entity):
-        self.sprites.append(spriteToRender)
+__MANAGER = __Render()
 
-__manager = __Render()
-
-def GetStaticManager():
-    global __manager
-    if(__manager == None):
+def get_static_manager():
+    global __MANAGER
+    if __MANAGER is None:
         try:
-            __manager = __Render()
+            __MANAGER = __Render()
         except Exception as e:
             raise TypeError from e
-    return __manager
+    return __MANAGER

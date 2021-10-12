@@ -1,95 +1,88 @@
+import keyboard
 from classes.Events.EventTypes.InputEvent import InputEvent
 from classes.Events import EventHandler
 from classes.InputSystem.InputClass import Input
 from Configs import InputKeyMap as Map
-import keyboard
 
 class __InputManagerHandler:
-    __keysPressed = []
+    __keys_pressed = []
     __observers = []
     __enableAllKeys = False
-    __EventHandler = EventHandler.GetStaticHandler()
+    __EventHandler = EventHandler.get_static_manager()
     __Map = Map.GetStaticMap()
 
-    def AddKeyPressToList(self,key=None):
-        if(key != None):
-            for k in self.__keysPressed:
-                if(k.key == key.key):
+    def add_key_press_to_list(self,key=None):
+        if key is not None:
+            for k in self.__keys_pressed:
+                if k.key == key.key:
                     return
-            
-            self.__keysPressed.append(key)      #Added to the list so its get executed
 
-    def ExecuteKeysPressed(self):
-        for k in self.__keysPressed:
-            e = InputEvent(k)                               #Create a Event of Input
-            self.__EventHandler.AddEventToSigleCheck(e)     #Send the Event to the Handler
-            self.NotifyObservers(k)
-        
-        #self.__keysPressed.clear()        #Clears the list for the next frame
-    
-    def GetKeyEvents(self):
-        return self.__keysPressed         #Returns the list of keys on the frame for outside uses
+            self.__keys_pressed.append(key)      #Added to the list so its get executed
+
+    def execute_keys_pressed(self):
+        for k in self.__keys_pressed:
+            e = InputEvent(k)                                   #Create a Event of Input
+            self.__EventHandler.add_event_to_sigle_check(e)     #Send the Event to the Handler
+            self.notify_observers(k)
+
+        #self.__keys_pressed.clear()        #Clears the list for the next frame
+
+    def get_key_events(self):
+        return self.__keys_pressed          #Returns the list of keys on the frame for outside uses
 
     def on_pressed(self,key):
-        
-        keyPressed = None
 
-        if(self.__enableAllKeys):
-            keyPressed = Input(key.name) #Enable all the keys to be register e process by the manager
-        
-        for s in self.__Map.keys:      #Check keys on the list to see if the user input need it to be map to another key
-            if(s.Input == key.name):
-                keyPressed = Input(s.actionName)  #Remap the user input
+        key_pressed = None
 
-        if(keyPressed != None):
-            self.AddKeyPressToList(keyPressed) #Add To a list of keys to be notify to the observers
+        if self.__enableAllKeys:
+            key_pressed = Input(key.name)   #Enable all the keys to be register e process by the manager
+
+        for s in self.__Map.keys:           #Check keys on the list to see if the user input need it to be map to another key
+            if s.key_input == key.name:
+                key_pressed = Input(s.action_name)  #Remap the user input
+
+        if key_pressed is not None:
+            self.add_key_press_to_list(key_pressed) #Add To a list of keys to be notify to the observers
 
     def on_release(self,key):
 
-        keyPressed = None
+        key_pressed = None
 
-        if(self.__enableAllKeys):
-            keyPressed = Input(key.name) #Enable all the keys to be register e process by the manager
-        
-        for s in self.__Map.keys:      #Check keys on the list to see if the user input need it to be map to another key
-            if(s.Input == key.name):
-                keyPressed = Input(s.actionName)
-        
-        if(keyPressed != None):
-            self.RemoveFromList(keyPressed.key)
+        if self.__enableAllKeys:
+            key_pressed = Input(key.name)   #Enable all the keys to be register e process by the manager
 
-    def RemoveFromList(self,key):
-        for k in self.__keysPressed:
-            if(k.key == key):
-                self.__keysPressed.remove(k)
+        for s in self.__Map.keys:           #Check keys on the list to see if the user input need it to be map to another key
+            if s.key_input == key.name:
+                key_pressed = Input(s.action_name)
 
-    def subscribeObserver(self,observer):   #Register functions to be notify without going though the EventManager
-        if(self.__observers.__contains__(observer) == False):
+        if key_pressed is not None:
+            self.remove_from_list(key_pressed.key)
+
+    def remove_from_list(self,key):
+        for k in self.__keys_pressed:
+            if k.key == key:
+                self.__keys_pressed.remove(k)
+
+    def subscribe_observer(self,observer):   #Register functions to be notify without going though the EventManager
+        if not self.__observers.__contains__(observer):
             self.__observers.append(observer)
             print("\nInputManager")
             print("   '->Observer Subcribed: " + str(observer))
 
-    def NotifyObservers(self,command):  #Notify any funcion subcribed as a observer and pass the key that was pressed
+    def notify_observers(self,command):  #Notify any funcion subcribed as a observer and pass the key that was pressed
         for o in self.__observers:
             o(command)
 
-__manager = __InputManagerHandler()         #Static InputManager so never happens to exists more than one
+__MANAGER = __InputManagerHandler()         #Static InputManager so never happens to exists more than one
 
-def GetStaticManager():
-    global __manager
-    if(__manager == None):
+def get_static_manager():
+    global __MANAGER
+    if __MANAGER is None:
         try:
-            __manager = __InputManagerHandler()
+            __MANAGER = __InputManagerHandler()
         except Exception as e:
             raise TypeError from e
-    return __manager
+    return __MANAGER
 
-def On_Pressed(key):
-    #print(key.name)
-    __manager.on_pressed(key)             #Send the key pressed to the InputManager
-
-def On_Release(key):
-    __manager.on_release(key)
-
-keyboard.on_release(callback=On_Release,suppress=True)  #Listen the keyboard for a key release
-keyboard.on_press(callback=On_Pressed,suppress=True)    #Listen the keyboard for a key press
+keyboard.on_release(callback=__MANAGER.on_release,suppress=True)  #Listen the keyboard for a key release
+keyboard.on_press(callback=__MANAGER.on_pressed,suppress=True)    #Listen the keyboard for a key press

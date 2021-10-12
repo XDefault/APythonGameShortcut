@@ -1,4 +1,4 @@
 class Animation:
     def __init__(self,name,rect):
         self.animation = rect
-        self.animationName = name
+        self.animation_name = name

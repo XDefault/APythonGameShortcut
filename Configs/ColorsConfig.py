@@ -22,3 +22,4 @@ class COLORS:
     #purples
     MAGENTA = (255,0,255)
     PURPLE = (128,0,128)
+    

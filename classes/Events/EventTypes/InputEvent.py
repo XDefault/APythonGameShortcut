@@ -5,5 +5,5 @@ class InputEvent(Event):
     def __init__(self,eventInput):
         super(InputEvent,self).__init__(eventInput)
     
-    def Execute(self):
+    def execute(self):
         pass
