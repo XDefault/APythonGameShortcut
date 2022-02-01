@@ -37,19 +37,6 @@ class PhysicsManager:
         if not self.__all_entitys.__contains__(entity):
             self.__all_entitys.append(entity)
 
-    def __update_physics(self):
-        if self.__timer >= PHYSICS_UPDATE_RATE:  #Update the entities check at a regular interval set in the config file
-            self.__check_entitys_to_update()
-
-            for entity in self.__to_update:
-                if entity.get_use_gravity:
-                    self.__apply_gravity(entity,GRAVITY)
-
-                self.__deaccelerate_entity_physic(entity,3)
-                self.__check_collisions(entity)
-                self.update_entity_physics(entity)         #Update each entity physics
-
-            self.__to_update.clear()             #Clear the list for next frame
 
     def __has_collision_with(self,sprite1:pygame.sprite,sprite2:pygame.sprite):    #Return a bool if the entity has collision with the other entity
 
@@ -84,6 +71,10 @@ class PhysicsManager:
             return sprite1.rect.bottom - sprite2.rect.top
         else:
             return sprite1.rect.right - sprite2.rect.left
+
+    def __apply_gravity(self,sprite,amount):
+        if(sprite.get_use_gravity() and not sprite.is_grounded()):
+            sprite.set_velocity_y(sprite.get_velocity_y() + amount)
 
     def __check_entity_collisions(self,sprite1:pygame.sprite,sprite2:pygame.sprite):
         current_x = sprite1.get_velocity_x()
@@ -154,13 +145,9 @@ class PhysicsManager:
             entity.set_velocity_y(0.0)
 
         #print("DeAccreleratePhysic")
-    def __apply_gravity(self,sprite,amount):
-        if(sprite.get_use_gravity() and not sprite.is_grounded()):
-            sprite.set_velocity_y(sprite.get_velocity_y() + amount)
 
     def __check_collisions(self,sprite1):      #Check for collisions between the entities in a list
 
-        #for s in self.__to_update:     #Check every entity againts any other in the list to see if its has any collision
         #sprite1._set_is_grounded(False)
         if sprite1.get_static_physics():
             return
@@ -171,6 +158,20 @@ class PhysicsManager:
 
     def update_entity_physics(self,sprite):                      #Update the physics of this entity
         sprite.rect.move_ip(sprite.get_velocity_x(),sprite.get_velocity_y())
+
+    def __update_physics(self):
+        if self.__timer >= PHYSICS_UPDATE_RATE:  #Update the entities check at a regular interval set in the config file
+            self.__check_entitys_to_update()
+
+            for entity in self.__to_update:
+                if entity.get_use_gravity:
+                    self.__apply_gravity(entity,GRAVITY)
+
+                self.__deaccelerate_entity_physic(entity,3)
+                self.__check_collisions(entity)
+                self.update_entity_physics(entity)         #Update each entity physics
+
+            self.__to_update.clear()             #Clear the list for next frame
 
     def update(self):
         self.__timer += 1/(Configuration.FPS)
