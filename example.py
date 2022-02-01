@@ -110,34 +110,42 @@ levelManager.unload_level_with_name(search_name="Example Level")#Stop rendering 
 myText = pygame.font.SysFont('Comic Sans MS',30)
 
 #Game Loop
-while True:
-    for event in  pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+def game_loop():
+    while True:
+        for event in  pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit(0)
 
-    inputManager.execute_keys_pressed()  #Execute key strokes
-    eventHandler.events_single_check()   #Execute events and remove then from the list
+        inputManager.execute_keys_pressed()  #Execute key strokes
+        eventHandler.events_single_check()   #Execute events and remove then from the list
 
-    PEngine.update()                   #Update the physics every frame
+        PEngine.update()                   #Update the physics every frame
 
-    Displaysurf.fill(COLORS.GRAY)
+        Displaysurf.fill(COLORS.GRAY)
 
-    playerGroup.update()
-    levelManager.update_level_entities() #Update entities on current loaded level
+        playerGroup.update()
+        levelManager.update_level_entities() #Update entities on current loaded level
 
-    render.draw_layers(Displaysurf)     #Render the layers to the display
+        render.draw_layers(Displaysurf)     #Render the layers to the display
 
-    #Setting up the text to use the translation from the json file
-    textSurface = myText.render("Current Language: "+current_game_lang,False,(0,0,0))
+        #Setting up the text to use the translation from the json file
+        textSurface = myText.render("Current Language: "+current_game_lang,False,(0,0,0))
 
-    #Draw the text to the screen
-    Displaysurf.blit(textSurface,(0,0))
+        #Draw the text to the screen
+        Displaysurf.blit(textSurface,(0,0))
 
-    #Show the rect of entities
-    pygame.draw.rect(Displaysurf,COLORS.RED,player1.rect,1)
-    pygame.draw.rect(Displaysurf,COLORS.BLUE,staticEntity.rect,1)
-    pygame.draw.rect(Displaysurf,COLORS.GREEN,normalEntity.rect,1)
+        #Show the rect of entities
+        pygame.draw.rect(Displaysurf,COLORS.RED,player1.rect,1)
+        pygame.draw.rect(Displaysurf,COLORS.BLUE,staticEntity.rect,1)
+        pygame.draw.rect(Displaysurf,COLORS.GREEN,normalEntity.rect,1)
 
-    pygame.display.update()
-    FramePerSec.tick(Configuration.FPS)
+        pygame.display.update()
+        FramePerSec.tick(Configuration.FPS)
+
+def main():
+    game_loop()
+
+if __name__ == "__main__":
+    main()
+    

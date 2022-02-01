@@ -9,7 +9,7 @@ class __InputManagerHandler:
     __observers = []
     __enableAllKeys = False
     __EventHandler = EventHandler.get_static_manager()
-    __Map = Map.GetStaticMap()
+    __Map = Map.get_static_map()
 
     def add_key_press_to_list(self,key=None):
         if key is not None:
