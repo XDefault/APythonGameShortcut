@@ -9,6 +9,7 @@ class PhysicsManager:
     __timer = 0.0
     __display = pygame.rect
     __physics_display_ratio = 2 #Extra size outside the screen that physics still should affect (1 = disable this function)
+    __FRAMES_TO_WAIT_BOUNCE = 3 #Wait for frames after a bounce to set entity._is_grounded = true
 
     def __init__(self,SurfaceDisplay:pygame.Surface):
         self.__set_display(SurfaceDisplay)
@@ -37,6 +38,13 @@ class PhysicsManager:
         if not self.__all_entitys.__contains__(entity):
             self.__all_entitys.append(entity)
 
+    def clamp(self,number,minimum_value,maximum_value):
+        return max(minimum_value, min(number, maximum_value))
+
+    def __bounce(self,h:float,bounce_amount:float):
+        #print(math.sin(self.clamp(t,0,1) * math.pi) * bounce_amount)
+        #return math.sin(self.clamp(t,0,1) * math.pi) * bounce_amount
+        return (h * 0.6) * bounce_amount
 
     def __has_collision_with(self,sprite1:pygame.sprite,sprite2:pygame.sprite):    #Return a bool if the entity has collision with the other entity
 
@@ -73,7 +81,7 @@ class PhysicsManager:
             return sprite1.rect.right - sprite2.rect.left
 
     def __apply_gravity(self,sprite,amount):
-        if(sprite.get_use_gravity() and not sprite.is_grounded()):
+        if sprite.get_use_gravity() and not sprite.is_grounded():
             sprite.set_velocity_y(sprite.get_velocity_y() + amount)
 
     def __check_entity_collisions(self,sprite1:pygame.sprite,sprite2:pygame.sprite):
@@ -108,21 +116,21 @@ class PhysicsManager:
                     current_x = 0
 
             elif col_dir == "bottom":
+                sprite1._set_is_grounded(True)
                 if not sprite1.get_static_physics():
-                    sprite1._set_is_grounded(True)
 
                     #print(sprite1.get_id_name() + " insidedis: " + str(insidedis))
-                    if insidedis > DIS_INSIDE_COLLISION:
+                    if insidedis >= DIS_INSIDE_COLLISION:
                         sprite1.rect.move_ip(0,-insidedis)
                 
                     #current_y = 0
 
-                    if sprite1.get_velocity_y() > 0:
+                    if sprite1.get_velocity_y() > 0.0:
                         current_y = 0
 
+                    current_y = self.bounce_update_y(sprite1,sprite2)
             #if(sprite1.__id_name == "Player1" or sprite1.__id_name == "Player2"):
             #    print(sprite1.__id_name + " has collision from " + col_dir)
-
         sprite1.set_velocity(current_x,current_y)
 
     def __deaccelerate_entity_physic(self,entity,ratio):
@@ -148,7 +156,6 @@ class PhysicsManager:
 
     def __check_collisions(self,sprite1):      #Check for collisions between the entities in a list
 
-        #sprite1._set_is_grounded(False)
         if sprite1.get_static_physics():
             return
 
@@ -158,6 +165,15 @@ class PhysicsManager:
 
     def update_entity_physics(self,sprite):                      #Update the physics of this entity
         sprite.rect.move_ip(sprite.get_velocity_x(),sprite.get_velocity_y())
+
+    def bounce_update_y(self,sprite,col):   #TODO bounce in all directions
+        #print(sprite.get_velocity_y())
+        if sprite.get_velocity_y() < 6:
+            return 0
+
+        velocity_y = sprite.get_velocity_y()
+        velocity_y = self.__bounce(velocity_y,(sprite.get_bounce() + col.get_bounce()) / 2)
+        return -velocity_y
 
     def __update_physics(self):
         if self.__timer >= PHYSICS_UPDATE_RATE:  #Update the entities check at a regular interval set in the config file
@@ -169,6 +185,10 @@ class PhysicsManager:
 
                 self.__deaccelerate_entity_physic(entity,3)
                 self.__check_collisions(entity)
+
+                if entity.get_velocity_y() < -3:    #TODO Delay some frames to give the player time to jump again when bouncing
+                        entity._set_is_grounded(False)
+
                 self.update_entity_physics(entity)         #Update each entity physics
 
             self.__to_update.clear()             #Clear the list for next frame

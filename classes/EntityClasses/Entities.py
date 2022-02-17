@@ -16,6 +16,7 @@ class Entity(pygame.sprite.Sprite):
         self.__use_gravity:bool = True
         self.__velocity:float = [0,0]
         self.__is_grounded:bool = False
+        self.__bounce:float = 1
 
         #public variables
         self.rot_angle = 0
@@ -84,6 +85,12 @@ class Entity(pygame.sprite.Sprite):
 
     def is_grounded(self):
         return self.__is_grounded
+
+    def get_bounce(self):
+        return self.__bounce
+
+    def set_bounce(self,value):
+        self.__bounce = value
 #Physics Related----------------------------------------------------------------------------------------------
 
     def _set_is_grounded(self,value:bool):
