@@ -41,6 +41,10 @@ normalEntity.spawn_point(350,400)    #Setting a SpawnPoint Position
 normalEntity.static_physics(True)    #Setting so physics are not to be controlled by the Physics Engine, it will still stop other entities
 #normalEntity.scale_entity(300,100)
 
+Floor3 = StaticEntity("Floor3")     #Creating a Normal Entity and setting a ID right at the start
+Floor3.spawn_point(150,200)    #Setting a SpawnPoint Position
+#Floor3.scale_entity(300,100)
+
 player1 = Player("Player1")  #Creating a player and setting a ID right at the start
 player1.static_physics(False) #Setting the player physics to be controlled by the Physics Engine
 player1.spawn_point(50,300)   #Setting the SpawnPoint Position
@@ -56,12 +60,14 @@ print("   '->player1 ID: "+player1.get_id_name())             #Printing the ID f
 playerGroup = pygame.sprite.Group(staticEntity) #Setting up a group of sprites
 playerGroup.add(player1)                        #Adding up the second player as part of the group
 playerGroup.add(normalEntity)
+playerGroup.add(Floor3)
 
 #Set Physics Engine
 PEngine = PhysicsManager(Displaysurf)           #Passing the Display of the game to the Physics Engine
 PEngine.add_entity_to_physics(staticEntity)        #Setting the entities that should be affected by the Physics Engine
 PEngine.add_entity_to_physics(player1)
 PEngine.add_entity_to_physics(normalEntity)
+PEngine.add_entity_to_physics(Floor3)
 
 #Set Render
 render = RenderManager.get_static_manager()
@@ -84,6 +90,7 @@ layer2.layer_name = "Background Layer"
 layer1.add_to_layer(staticEntity)
 layer2.add_to_layer(player1)
 layer1.add_to_layer(normalEntity)
+layer2.add_to_layer(Floor3)
 #Set Layer To Render
 render.add_layer_to_render(layer1)
 render.add_layer_to_render(layer2)
@@ -139,6 +146,7 @@ def game_loop():
         pygame.draw.rect(Displaysurf,COLORS.RED,player1.rect,1)
         pygame.draw.rect(Displaysurf,COLORS.BLUE,staticEntity.rect,1)
         pygame.draw.rect(Displaysurf,COLORS.GREEN,normalEntity.rect,1)
+        pygame.draw.rect(Displaysurf,COLORS.CYAN,Floor3.rect,1)
 
         pygame.display.update()
         FramePerSec.tick(Configuration.FPS)

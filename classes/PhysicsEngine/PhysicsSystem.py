@@ -81,7 +81,7 @@ class PhysicsManager:
             return sprite1.rect.right - sprite2.rect.left
 
     def __apply_gravity(self,sprite,amount):
-        if sprite.get_use_gravity() and not sprite.is_grounded():
+        if sprite.get_use_gravity():
             sprite.set_velocity_y(sprite.get_velocity_y() + amount)
 
     def __check_entity_collisions(self,sprite1:pygame.sprite,sprite2:pygame.sprite):
@@ -120,12 +120,13 @@ class PhysicsManager:
                 if not sprite1.get_static_physics():
 
                     #print(sprite1.get_id_name() + " insidedis: " + str(insidedis))
-                    if insidedis >= DIS_INSIDE_COLLISION:
+                    if insidedis > DIS_INSIDE_COLLISION:
                         sprite1.rect.move_ip(0,-insidedis)
                 
                     #current_y = 0
-
-                    if sprite1.get_velocity_y() > 0.0:
+                    if sprite1.get_id_name() == "Player1":
+                        print(sprite1.get_velocity_y())
+                    if sprite1.get_velocity_y() > 1:
                         current_y = 0
 
                     current_y = self.bounce_update_y(sprite1,sprite2)
@@ -184,12 +185,16 @@ class PhysicsManager:
                     self.__apply_gravity(entity,GRAVITY)
 
                 self.__deaccelerate_entity_physic(entity,3)
-                self.__check_collisions(entity)
 
-                if entity.get_velocity_y() < -3:    #TODO Delay some frames to give the player time to jump again when bouncing
+                if entity.get_velocity_y() < -3:    #Delay some frames to give the player time to jump again when bouncing
+                    if entity._wait_frames_after_bounce > self.__FRAMES_TO_WAIT_BOUNCE:
                         entity._set_is_grounded(False)
+                        entity._wait_frames_after_bounce = 0
+                    else:
+                        entity._wait_frames_after_bounce += 1
 
                 self.update_entity_physics(entity)         #Update each entity physics
+                self.__check_collisions(entity)
 
             self.__to_update.clear()             #Clear the list for next frame
 

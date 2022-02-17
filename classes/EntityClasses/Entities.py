@@ -17,6 +17,7 @@ class Entity(pygame.sprite.Sprite):
         self.__velocity:float = [0,0]
         self.__is_grounded:bool = False
         self.__bounce:float = 1
+        self._wait_frames_after_bounce = 0
 
         #public variables
         self.rot_angle = 0
