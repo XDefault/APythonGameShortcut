@@ -124,8 +124,7 @@ class PhysicsManager:
                         sprite1.rect.move_ip(0,-insidedis)
                 
                     #current_y = 0
-                    if sprite1.get_id_name() == "Player1":
-                        print(sprite1.get_velocity_y())
+                    
                     if sprite1.get_velocity_y() > 1:
                         current_y = 0
 
