@@ -6,17 +6,17 @@ class __Render:
     to_render = []
     allLayers = []
     __current_camera = None
-    render = pygame.sprite.Group()
+    __render = pygame.sprite.Group()
 
     def draw_layers(self,display):
         self.__reorder_to_priority()
         for s in self.to_render:
             #print(self.GetLayerPriority(s))
-            self.render.add(s.sprites)
+            self.__render.add(s.sprites)
 
         self.__update_pos_relative_to_camera()
-        self.render.draw(display)
-        self.render.empty()
+        self.__render.draw(display)
+        self.__render.empty()
 
     def get_layer_priority(self, layer_list):
         return layer_list.orderOfLayer
