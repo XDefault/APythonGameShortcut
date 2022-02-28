@@ -133,6 +133,15 @@ class PhysicsManager:
             #    print(sprite1.__id_name + " has collision from " + col_dir)
         sprite1.set_velocity(current_x,current_y)
 
+    def bounce_update_y(self,sprite,col):   #TODO bounce in all directions
+        #print(sprite.get_velocity_y())
+        if sprite.get_velocity_y() < 6:
+            return 0
+
+        velocity_y = sprite.get_velocity_y()
+        velocity_y = self.__bounce(velocity_y,(sprite.get_bounce() + col.get_bounce()) / 2)
+        return -velocity_y
+
     def __deaccelerate_entity_physic(self,entity,ratio):
 
         velocity_amount = (PHYSICS_UPDATE_RATE*Configuration.FPS)/(Configuration.FPS / 2.5)
@@ -152,8 +161,6 @@ class PhysicsManager:
         else:
             entity.set_velocity_y(0.0)
 
-        #print("DeAccreleratePhysic")
-
     def __check_collisions(self,sprite1):      #Check for collisions between the entities in a list
 
         if sprite1.get_static_physics():
@@ -165,15 +172,6 @@ class PhysicsManager:
 
     def update_entity_physics(self,sprite):                      #Update the physics of this entity
         sprite.rect.move_ip(sprite.get_velocity_x(),sprite.get_velocity_y())
-
-    def bounce_update_y(self,sprite,col):   #TODO bounce in all directions
-        #print(sprite.get_velocity_y())
-        if sprite.get_velocity_y() < 6:
-            return 0
-
-        velocity_y = sprite.get_velocity_y()
-        velocity_y = self.__bounce(velocity_y,(sprite.get_bounce() + col.get_bounce()) / 2)
-        return -velocity_y
 
     def __update_physics(self):
         if self.__timer >= PHYSICS_UPDATE_RATE:  #Update the entities check at a regular interval set in the config file
